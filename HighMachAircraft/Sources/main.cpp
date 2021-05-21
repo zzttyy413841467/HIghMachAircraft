@@ -8,7 +8,7 @@ int main()
 {
     cout << "Hello VSC" << endl;
     double a = 1;
-
+    string s = "${workspaceFolder}";
     cout << 3 << endl;
     Vector<double> b(3);
     b[0] = 1;
@@ -17,6 +17,7 @@ int main()
     TestVector1();
     TestVector2();
     Matrix<double> mat = ones(3, 3);
+    int i = mat.n_cols();
     system("pause");
     return 0;
 }

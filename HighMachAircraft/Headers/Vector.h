@@ -21,6 +21,7 @@ public:
 
   Vector(const Vector &rhs)
       : theSize{rhs.theSize}, theCapacity{rhs.theCapacity}, objects{nullptr}
+
   {
     objects = new Object[theCapacity];
     for (int k = 0; k < theSize; ++k)
@@ -705,30 +706,11 @@ private:
   Object **objects;
 };
 
-Matrix<double> eye(int m, int n)
-{
-  Matrix<double> temp(m, n, 0);
-  for (int i = 0; i < m; i++)
-  {
-    for (int j = 0; j < n; j++)
-    {
-      if (i == j)
-        temp[i][j] = 1.0;
-    }
-  }
-  return temp;
-}
+Matrix<double> eye(int m, int n);
+Matrix<double> ones(int m, int n);
+Matrix<double> zeros(int m, int n);
 
-Matrix<double> zeros(int m, int n)
-{
-  Matrix<double> temp(m, n, 0);
-  return temp;
-}
-
-Matrix<double> ones(int m, int n)
-{
-  Matrix<double> temp(m, n, 1);
-  return temp;
-}
+typedef Vector<double> vec;
+typedef Matrix<double> mat;
 
 #endif

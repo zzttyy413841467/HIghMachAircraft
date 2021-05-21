@@ -1,8 +1,15 @@
 #pragma once
 
+#include "Vector.h"
+
+static const double pi = 3.141592653589793115998;
+
 class SysState
 {
 public:
+    vec Position;
+    vec Velocity;
+
     SysState();
     ~SysState();
 };
@@ -10,23 +17,23 @@ public:
 class SysStateDerivate
 {
 public:
+    vec PositionDerivate;
+    vec VelocityDerivate;
+
     SysStateDerivate();
     ~SysStateDerivate();
 };
 
-class MissleInfo
+class AircraftInfo
 {
 private:
-    /* data */
+    
 public:
-    MissleInfo(/* args */);
-    ~MissleInfo();
+    double FlightTime;
+    vec Position;
+    vec Velocity;
+    vec Acceleration;
+    AircraftInfo(/* args */);
+    ~AircraftInfo();
 };
 
-MissleInfo::MissleInfo(/* args */)
-{
-}
-
-MissleInfo::~MissleInfo()
-{
-}

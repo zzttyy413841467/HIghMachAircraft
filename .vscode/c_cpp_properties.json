@@ -3,7 +3,14 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}\\**",
+                "E:\\HighMachAircraft\\HighMachAircraft\\Headers\\**",
+                "C:/mingw_w64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/**",
+                "C:/mingw_w64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32/**",
+                "C:/mingw_w64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward/**",
+                "C:/mingw_w64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/**",
+                "C:/mingw_w64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed/**",
+                "C:/mingw_w64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include/**"
             ],
             "defines": [
                 "_DEBUG",
@@ -11,10 +18,10 @@
                 "_UNICODE"
             ],
             "windowsSdkVersion": "10.0.17763.0",
-            "compilerPath": "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.28.29910/bin/Hostx64/x64/cl.exe",
+            "compilerPath": "C:/mingw_w64/mingw64/bin/g++.exe",
             "cStandard": "c17",
             "cppStandard": "c++17",
-            "intelliSenseMode": "windows-msvc-x64"
+            "intelliSenseMode": "windows-gcc-x64"
         }
     ],
     "version": 4
