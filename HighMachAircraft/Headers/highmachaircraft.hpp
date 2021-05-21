@@ -11,9 +11,4 @@ public:
     HighMachAircraft &operator=(HighMachAircraft &&) = default;
     HighMachAircraft &operator=(const HighMachAircraft &) = default;
     ~HighMachAircraft();
-
-protected:
-
-private:
-
 };
