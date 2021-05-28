@@ -1,4 +1,7 @@
-#pragma once
+#ifndef AIRCRAFTBASE_H_
+#define AIRCRAFTBASE_H_
+
+#include <string>
 
 class AircraftModel;
 class AircraftBase
@@ -12,3 +15,4 @@ public:
     virtual void UpdateOutput(double timeCur, AircraftModel *pAirObject) = 0;
     virtual void UpdateDerivate(double timeCur, AircraftModel *pAirObject) = 0;
 };
+#endif

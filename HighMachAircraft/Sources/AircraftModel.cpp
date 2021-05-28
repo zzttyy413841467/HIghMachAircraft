@@ -1,9 +1,19 @@
 #include "AircraftModel.h"
+#include "Airframe.h"
+#include "FlightController.h"
 
 
 AircraftModel::AircraftModel()
 {
+    sysState = new SysState;
+    sysStateDerivate = new SysStateDerivate;
 
+    airframe = new Airframe(this);
+    flightController = new FlightController(this);
+    ode = new RungeKutta4<AircraftModel>;
+
+    AircraftModels.push_back(airframe);
+    AircraftModels.push_back(flightController);
 }
 
 AircraftModel::~AircraftModel()

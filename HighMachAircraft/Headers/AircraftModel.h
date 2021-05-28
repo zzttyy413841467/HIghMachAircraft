@@ -20,7 +20,7 @@ private:
     SysStateDerivate *sysStateDerivate;
     Airframe *airframe;
     FlightController *flightController;
-    vector<AircraftBase *> MissleModels;
+    vector<AircraftBase *> AircraftModels;
     ODEAlgorithm<AircraftModel> *ode;
 
     void convertVectorToSysState(const vec &sysstate);

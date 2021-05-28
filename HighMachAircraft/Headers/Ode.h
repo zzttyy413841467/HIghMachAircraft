@@ -16,7 +16,7 @@ template <class Object>
 class RungeKutta4 : public ODEAlgorithm<Object>
 {
 public:
-    RungeKutta4() : ODEAlgorithm() {}
+    RungeKutta4() {}
     virtual ~RungeKutta4() {}
     virtual void ODEstep(vec &InOutStateVec, double t, Object &PropagateFunc, double dt);
 };
@@ -25,7 +25,7 @@ template <class Object>
 class Euler : public ODEAlgorithm<Object>
 {
 public:
-    Euler() : ODEAlgorithm() {}
+    Euler() {}
     virtual ~Euler() {}
     virtual void ODEstep(vec &InOutStateVec, double t, Object &PropagateFunc, double dt);
 };
@@ -34,7 +34,7 @@ template <class Object>
 class RungeKutta2 : public ODEAlgorithm<Object>
 {
 public:
-    RungeKutta2() : ODEAlgorithm() {}
+    RungeKutta2() {}
     virtual ~RungeKutta2() {}
     virtual void ODEstep(vec &InOutStateVec, double t, Object &PropagateFunc, double dt);
 };
@@ -43,9 +43,9 @@ template <class Object>
 void RungeKutta4<Object>::ODEstep(vec &InOutStateVec, double t, Object &PropagateFunc, double dt)
 {
     int n = InOutStateVec.size();
-    vec ytmp(n, 0);
-    vec k(n, 0);
-    vec yout(n, 0);
+    vec ytmp(n, 0.0);
+    vec k(n, 0.0);
+    vec yout(n, 0.0);
 
     yout = InOutStateVec;
     ytmp = InOutStateVec;

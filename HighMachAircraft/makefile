@@ -41,7 +41,7 @@ ${BIN_TARGET}:${OBJ}
 
 # 子目标规则：生成链接文件
 ${OBJ_DIR}/%.o:${SRC_DIR}/%.cpp
-	${CC} -o $@ -c -g $< -I${INC_DIR}
+	${CC} -o $@ -c -Wall -g $< -I${INC_DIR}
 
 #clean规则
 #.PHONY: clean
