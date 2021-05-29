@@ -1,1 +1,3 @@
-/HighMachAircraft/Output
+/HighMachAircraft/Output/*
+/build
+!/HighMachAircraft/Output/bin/

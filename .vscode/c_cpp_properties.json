@@ -4,13 +4,7 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/HighMachAircraft/Headers/**",
-                "C:/mingw_w64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/**",
-                "C:/mingw_w64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32/**",
-                "C:/mingw_w64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward/**",
-                "C:/mingw_w64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/**",
-                "C:/mingw_w64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed/**",
-                "C:/mingw_w64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include/**"
+                "${workspaceFolder}/HighMachAircraft/Headers/**"
             ],
             "defines": [
                 "_DEBUG",
@@ -18,10 +12,11 @@
                 "_UNICODE"
             ],
             "windowsSdkVersion": "10.0.17763.0",
-            "compilerPath": "C:/mingw_w64/mingw64/bin/g++.exe",
+            "compilerPath": "C:\\Program Files\\mingw-w64\\bin\\g++.exe",
             "cStandard": "c17",
             "cppStandard": "c++17",
-            "intelliSenseMode": "windows-gcc-x64"
+            "intelliSenseMode": "windows-gcc-x64",
+            "configurationProvider": "ms-vscode.cmake-tools"
         }
     ],
     "version": 4
