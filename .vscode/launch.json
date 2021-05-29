@@ -12,7 +12,7 @@
             "program": "${workspaceFolder}/HighMachAircraft/Output/bin/main.exe",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/HighMachAircraft/",
+            "cwd": "${workspaceFolder}/HighMachAircraft//Output/bin",
             "environment": [],
             "externalConsole": true,
             "MIMode": "gdb",

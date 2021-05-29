@@ -1,4 +1,6 @@
-#pragma once
+#ifndef HIGHMACHAIRCRAFT_H_
+#define HIGHMACHAIRCRAFT_H_
+
 #include <iostream>
 using namespace std;
 
@@ -12,3 +14,4 @@ public:
     HighMachAircraft &operator=(const HighMachAircraft &) = default;
     ~HighMachAircraft();
 };
+#endif

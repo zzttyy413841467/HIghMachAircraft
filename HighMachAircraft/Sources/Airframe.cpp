@@ -3,7 +3,6 @@
 #include "Airframe.h"
 #include "AircraftModel.h"
 
-
 Airframe::Airframe()
 {
     pAirObj = 0;
@@ -53,17 +52,14 @@ void Airframe::UpdateDerivate(double timeCur, AircraftModel *pAirObject)
 
 Dynamics::Dynamics()
 {
-
 }
 
 Dynamics::Dynamics(AircraftModel *pObj)
 {
-
 }
 
 Dynamics::~Dynamics()
 {
-
 }
 
 void Dynamics::Initial()
