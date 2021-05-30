@@ -3,6 +3,7 @@
 
 #include "Vector.h"
 #include "AircraftBase.h"
+#include "StandardAtmosphere.h"
 
 class AircraftModel;
 class Dynamics;
@@ -89,6 +90,7 @@ private:
 
     vec m_Force;
     vec m_acceleration;
+    StandardAtmosphere SA;
 };
 
 class Propulsion : public AircraftBase
