@@ -7,6 +7,7 @@ using namespace std;
 int main()
 {
     cout << "Hello VSC" << endl;
+    double 是 = 0;
     double a = 1;
     string s = "${workspaceFolder}";
     cout << 3 << endl;
