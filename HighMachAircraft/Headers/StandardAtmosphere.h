@@ -32,12 +32,4 @@ public:
     static double getg(double h);
 };
 
-StandardAtmosphere::StandardAtmosphere(/* args */)
-{
-}
-
-StandardAtmosphere::~StandardAtmosphere()
-{
-}
-
 #endif

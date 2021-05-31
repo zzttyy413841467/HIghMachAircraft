@@ -6,6 +6,14 @@ const double StandardAtmosphere::p_sl = 101325;
 const double StandardAtmosphere::rho_sl = 1.225;
 const double StandardAtmosphere::g0 = 9.8;
 
+StandardAtmosphere::StandardAtmosphere(/* args */)
+{
+}
+
+StandardAtmosphere::~StandardAtmosphere()
+{
+}
+
 double StandardAtmosphere::h_restrict(double h)
 {
     if (h < 0)
