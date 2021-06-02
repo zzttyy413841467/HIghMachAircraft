@@ -24,6 +24,10 @@ public:
     void UpdateOutput(double timeCur, AircraftModel *pAirObject);
     void UpdateDerivate(double timeCur, AircraftModel *pAirObject);
 
+    Guidance *getGuidance() { return guidance; }
+
+    void getFileOutputItemName(vector<string> &FileOutItemName);
+    friend ostream &operator<<(ostream &os, const FlightController &pObj);
 private:
     AircraftModel *pAirObj;
     Guidance *guidance;
@@ -51,7 +55,7 @@ public:
     vec getCommand() const { return command; }
     int getGuidancePhase() const { return GuidancePhase; }
 
-    void getFileOutputItemName(Vector<string> &FileOutItemName);
+    void getFileOutputItemName(vector<string> &FileOutItemName);
     friend ostream &operator<<(ostream &os, const Guidance &pObj);
 
 private:
@@ -60,7 +64,7 @@ private:
     FirstGuidance *firstGuidance;
     SecondGuidance *secondGuidance;
     ThirdGuidance *thirdGuidance;
-    vector<AircraftBase *> FlightControllerModels;
+    vector<AircraftBase *> GuidanceModels;
     vec command;
 };
 

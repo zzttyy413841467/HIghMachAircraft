@@ -26,7 +26,7 @@ public:
     Propulsion *getPropulsion() { return propulsion; }
     AeroData *getAeroData() { return aerodata; }
 
-    void getFileOutputItemName(Vector<string> &FileOutItemName);
+    void getFileOutputItemName(vector<string> &FileOutItemName);
     friend ostream &operator<<(ostream &os, const Airframe &pObj);
 
 private:
@@ -64,7 +64,7 @@ public:
     vec getGravity() const { return Gravity; }
     vec getAcc() const { return m_acceleration; }
 
-    void getFileOutputItemName(Vector<string> &FileOutItemName);
+    void getFileOutputItemName(vector<string> &FileOutItemName);
     friend ostream &operator<<(ostream &os, const Dynamics &pObj);
 
 private:
@@ -105,7 +105,7 @@ public:
     void UpdateOutput(double timeCur, AircraftModel *pAirObject);
     void UpdateDerivate(double timeCur, AircraftModel *pAirObject);
 
-    void getFileOutputItemName(Vector<string> &FileOutItemName);
+    void getFileOutputItemName(vector<string> &FileOutItemName);
     friend ostream &operator<<(ostream &os, const Propulsion &pObj);
 
 private:
@@ -124,7 +124,7 @@ public:
     void UpdateOutput(double timeCur, AircraftModel *pAirObject);
     void UpdateDerivate(double timeCur, AircraftModel *pAirObject);
 
-    void getFileOutputItemName(Vector<string> &FileOutItemName);
+    void getFileOutputItemName(vector<string> &FileOutItemName);
     friend ostream &operator<<(ostream &os, const AeroData &pObj);
 
 private:

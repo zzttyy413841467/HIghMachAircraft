@@ -15,7 +15,8 @@ class AircraftModel : public AircraftBase
 {
 private:
     double t_flight;
-    double FlightPhase;
+    int FlightPhase;
+    double TimeStep;
     SysState *sysState;
     SysStateDerivate *sysStateDerivate;
     Airframe *airframe;
@@ -43,6 +44,9 @@ public:
     SysState *getSysState() { return sysState; }
 
     vec operator()(double t, const vec &sysstate);
+
+    void getFileOutoutItemName(vector<string> &FileOutputItemName);
+    void CreateAirObjOutputFile(ofstream &AirFileOutputObj);
     friend ostream &operator<<(ostream &os, const AircraftModel &pAirObject);
 };
 
