@@ -21,6 +21,8 @@ SRC_DIR=./Sources
 # 其它中间文件存放目录
 OBJ_DIR=./Output
 
+#库目录
+
 # 源文件列表
 SRC	:= ${wildcard ${SRC_DIR}/*.cpp}
 
@@ -41,8 +43,8 @@ ${BIN_TARGET}:${OBJ}
 
 # 子目标规则：生成链接文件
 ${OBJ_DIR}/%.o:${SRC_DIR}/%.cpp
-	${CC} -o $@ -c -g $< -I${INC_DIR}
-
+	${CC} -o $@ -c -g $< -I${INC_DIR} 
+#
 #clean规则
 #.PHONY: clean
 #clean:

@@ -44,6 +44,8 @@ void AircraftModel::AircraftStepOn()
 
 vec AircraftModel::operator()(double t, const vec &sysstate)
 {
+    vec a;
+    return a;
 }
 
 void AircraftModel::convertVectorToSysState(const vec &sysstate)
@@ -52,12 +54,19 @@ void AircraftModel::convertVectorToSysState(const vec &sysstate)
 
 vec AircraftModel::convertSysStateToVector()
 {
+
+    vec a;
+    return a;
 }
 
 vec AircraftModel::computeSysStateDerivate()
 {
+    vec a;
+    return a;
 }
 
 ostream &operator<<(ostream &os, const AircraftModel &pAirObject)
 {
+
+    return os;
 }

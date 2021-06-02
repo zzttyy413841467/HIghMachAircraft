@@ -3,9 +3,11 @@
 #include "Vector.h"
 #include "ceshi.h"
 using namespace std;
+//#include "armadillo"
 
 int main()
 {
+
     cout << "Hello VSC" << endl;
     double a = 1;
     double 是 = 1.0;
