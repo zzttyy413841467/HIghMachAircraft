@@ -54,9 +54,10 @@ public:
     vec getPositionDerivate() const { return PositionDerivate; }
     vec getVelocityDerivate() const { return VelocityDerivate; }
     double getAlpha() const { return Alpha; }
+    double getBeta() const { return Beta; }
     double getSigma() const { return Sigma; }
     double getMa() const { return Ma; }
-    double getG() const { return Ma; }
+    double getG() const { return SA.getg(H / 1000); }
     double getH() const { return H; }
     double getQ() const { return Q; }
     double getVelScalar() const { return VelScalar; }
@@ -76,6 +77,7 @@ private:
     vec VelocityDerivate;
 
     double Alpha;
+    double Beta;
     double Sigma;
     double Ma;
     double H;
@@ -105,11 +107,20 @@ public:
     void UpdateOutput(double timeCur, AircraftModel *pAirObject);
     void UpdateDerivate(double timeCur, AircraftModel *pAirObject);
 
+    double getMass() const { return mass; }
+    double getThrustTotal() const { return thrustTotal; }
+    vec getThrust() const { return thrust; }
+
     void getFileOutputItemName(vector<string> &FileOutItemName);
     friend ostream &operator<<(ostream &os, const Propulsion &pObj);
 
 private:
     AircraftModel *pAirObj;
+
+    double timeFlightNow;
+    double mass;
+    double thrustTotal;
+    vec thrust;
 };
 
 class AeroData : public AircraftBase

@@ -115,6 +115,7 @@ public:
     {
       objects[i] = rhs[i];
     }
+    return *this;
   }
 
   bool empty() const

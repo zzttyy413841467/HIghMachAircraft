@@ -69,6 +69,9 @@ void AircraftModel::AircraftStepOn()
         UpdateOutput(t_flight, this);
         UpdateDerivate(t_flight, this);
     }
+    vec x0 = convertSysStateToVector();
+    ode->ODEstep(x0, t_flight, *this, TimeStepTemp);
+    convertVectorToSysState(x0);
 }
 
 vec AircraftModel::operator()(double t, const vec &sysstate)

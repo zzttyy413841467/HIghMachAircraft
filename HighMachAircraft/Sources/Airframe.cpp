@@ -90,6 +90,8 @@ Dynamics::Dynamics()
     VelocityDerivate.assign(3, 0);
 
     Alpha = 0;
+    Beta = 0;
+    Sigma = 0;
     Ma = 0;
     H = 0;
     Q = 0;
@@ -112,6 +114,8 @@ Dynamics::Dynamics(AircraftModel *pObj)
     VelocityDerivate.assign(3, 0);
 
     Alpha = 0;
+    Beta = 0;
+    Sigma = 0;
     Ma = 0;
     H = 0;
     Q = 0;
@@ -139,6 +143,8 @@ void Dynamics::UpdateState(double timeCur, AircraftModel *pAirObject)
     Velocity = pAirObject->getSysState()->Velocity;
     VelScalar = Velocity.norm2();
     Alpha = atan2(-Velocity[1], Velocity[0]);
+    Beta = asin(Velocity[2] / VelScalar);
+    Sigma = atan2(Velocity[2], Velocity[0]);
 
     H = Position[1];
     Ma = VelScalar / SA.geta(H / 1000);
@@ -156,19 +162,34 @@ void Dynamics::UpdateDerivate(double timeCur, AircraftModel *pAirObject)
 void Dynamics::getFileOutputItemName(vector<string> &FileOutItemName)
 {
     FileOutItemName.push_back("PositionX");
+    FileOutItemName.push_back("PositionY");
+    FileOutItemName.push_back("PositionZ");
+    FileOutItemName.push_back("VelocityX");
+    FileOutItemName.push_back("VelocityY");
+    FileOutItemName.push_back("VelocityZ");
+    FileOutItemName.push_back("Alpha");
+    FileOutItemName.push_back("Beta");
+    FileOutItemName.push_back("Sigma");
+    FileOutItemName.push_back("Ma");
 }
 
 ostream &operator<<(ostream &os, const Dynamics &pObj)
 {
+    os << pObj.Position[0] << "\t" << pObj.Position[0] << "\t" << pObj.Position[0] << "\t"
+       << pObj.Velocity[0] << "\t" << pObj.Velocity[0] << "\t" << pObj.Velocity[0] << "\t"
+       << pObj.Alpha << "\t" << pObj.Beta << "\t" << pObj.Sigma << "\t" << pObj.Ma << "\t";
+
     return os;
 }
 
 Propulsion::Propulsion()
 {
+    pAirObj = 0;
 }
 
 Propulsion::Propulsion(AircraftModel *pObj)
 {
+    pAirObj = pObj;
 }
 
 Propulsion::~Propulsion()
@@ -192,19 +213,23 @@ void Propulsion::UpdateDerivate(double timeCur, AircraftModel *pAirObject)
 }
 void Propulsion::getFileOutputItemName(vector<string> &FileOutItemName)
 {
-    FileOutItemName.push_back("PositionX");
+    FileOutItemName.push_back("Mass");
+    FileOutItemName.push_back("ThrustTotal");
 }
 
 ostream &operator<<(ostream &os, const Propulsion &pObj)
 {
+    os << pObj.mass << "\t" << pObj.thrustTotal << "\t";
     return os;
 }
 AeroData::AeroData()
 {
+    pAirObj = 0;
 }
 
 AeroData::AeroData(AircraftModel *pObj)
 {
+    pAirObj = pObj;
 }
 
 AeroData::~AeroData()
@@ -228,7 +253,6 @@ void AeroData::UpdateDerivate(double timeCur, AircraftModel *pAirObject)
 }
 void AeroData::getFileOutputItemName(vector<string> &FileOutItemName)
 {
-    FileOutItemName.push_back("PositionX");
 }
 
 ostream &operator<<(ostream &os, const AeroData &pObj)
