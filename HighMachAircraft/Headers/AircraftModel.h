@@ -45,6 +45,7 @@ public:
 
     vec operator()(double t, const vec &sysstate);
 
+    int getFlightPhase() const { return FlightPhase; }
     void getFileOutoutItemName(vector<string> &FileOutputItemName);
     void CreateAirObjOutputFile(ofstream &AirFileOutputObj);
     friend ostream &operator<<(ostream &os, const AircraftModel &pAirObject);

@@ -61,6 +61,7 @@ public:
     double getH() const { return H; }
     double getQ() const { return Q; }
     double getVelScalar() const { return VelScalar; }
+    double getrho() const { return rho; }
 
     vec getGravity() const { return Gravity; }
     vec getAcc() const { return m_acceleration; }
@@ -82,6 +83,7 @@ private:
     double Ma;
     double H;
     double Q;
+    double rho;
     double VelScalar;
     vec AeroForce;
     vec ThrustForce;
@@ -89,6 +91,7 @@ private:
 
     double mass;
     double Sref;
+    double Lref;
 
     vec m_Force;
     vec m_acceleration;
@@ -107,9 +110,9 @@ public:
     void UpdateOutput(double timeCur, AircraftModel *pAirObject);
     void UpdateDerivate(double timeCur, AircraftModel *pAirObject);
 
-    double getMass() const { return mass; }
+    double getMassflow() const { return massflow; }
     double getThrustTotal() const { return thrustTotal; }
-    vec getThrust() const { return thrust; }
+    
 
     void getFileOutputItemName(vector<string> &FileOutItemName);
     friend ostream &operator<<(ostream &os, const Propulsion &pObj);
@@ -117,10 +120,12 @@ public:
 private:
     AircraftModel *pAirObj;
 
+    int FlightPhase;
     double timeFlightNow;
-    double mass;
+    double massflow;
     double thrustTotal;
-    vec thrust;
+    int AeroStageFlag;
+
 };
 
 class AeroData : public AircraftBase
@@ -135,11 +140,22 @@ public:
     void UpdateOutput(double timeCur, AircraftModel *pAirObject);
     void UpdateDerivate(double timeCur, AircraftModel *pAirObject);
 
+
+    double getLref() const { return Lref; }
+    double getSref() const { return Sref; }
+    double getCl() const { return Cl; }
+    double getCd() const { return Cd; }
+
     void getFileOutputItemName(vector<string> &FileOutItemName);
     friend ostream &operator<<(ostream &os, const AeroData &pObj);
 
 private:
     AircraftModel *pAirObj;
+    int AeroStageFlag;
+    static const double Sref;
+    static const double Lref;
+    double Cl;
+    double Cd;
 };
 
 #endif
