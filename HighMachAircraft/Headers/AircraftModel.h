@@ -49,6 +49,8 @@ public:
     void getFileOutoutItemName(vector<string> &FileOutputItemName);
     void CreateAirObjOutputFile(ofstream &AirFileOutputObj);
     friend ostream &operator<<(ostream &os, const AircraftModel &pAirObject);
+
+    bool phaseChangeFlag;
 };
 
 #endif

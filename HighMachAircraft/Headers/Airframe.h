@@ -84,9 +84,10 @@ private:
     double H;
     double Q;
     double rho;
+    double g;
     double VelScalar;
     vec AeroForce;
-    vec ThrustForce;
+    double ThrustForce;
     vec Gravity;
 
     double mass;
@@ -112,7 +113,7 @@ public:
 
     double getMassflow() const { return massflow; }
     double getThrustTotal() const { return thrustTotal; }
-    
+    double getMass() const { return mass; }
 
     void getFileOutputItemName(vector<string> &FileOutItemName);
     friend ostream &operator<<(ostream &os, const Propulsion &pObj);
@@ -122,10 +123,10 @@ private:
 
     int FlightPhase;
     double timeFlightNow;
+    double mass;
     double massflow;
     double thrustTotal;
     int AeroStageFlag;
-
 };
 
 class AeroData : public AircraftBase
@@ -139,7 +140,6 @@ public:
     void UpdateState(double timeCur, AircraftModel *pAirObject);
     void UpdateOutput(double timeCur, AircraftModel *pAirObject);
     void UpdateDerivate(double timeCur, AircraftModel *pAirObject);
-
 
     double getLref() const { return Lref; }
     double getSref() const { return Sref; }

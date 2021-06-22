@@ -5,7 +5,7 @@
 AircraftModel::AircraftModel()
 {
     t_flight = 0;
-    FlightPhase = 0;
+    FlightPhase = 1;
     TimeStep = 0.01;
     sysState = new SysState;
     sysStateDerivate = new SysStateDerivate;
@@ -13,7 +13,7 @@ AircraftModel::AircraftModel()
     airframe = new Airframe(this);
     flightController = new FlightController(this);
     ode = new RungeKutta4<AircraftModel>;
-
+    phaseChangeFlag = true;
     AircraftModels.push_back(airframe);
     AircraftModels.push_back(flightController);
 }
@@ -63,6 +63,14 @@ void AircraftModel::AircraftStepOn()
 {
     TimeStep = 0.01;
     double TimeStepTemp = TimeStep;
+
+    if (phaseChangeFlag == true)
+    {
+        if (FlightPhase > 1)
+            this->getSysState()->setm(6500);
+        phaseChangeFlag = false;
+    }
+
     if (t_flight == 0)
     {
         UpdateState(t_flight, this);
@@ -92,6 +100,8 @@ void AircraftModel::convertVectorToSysState(const vec &sysstate)
         sysState->Position[j] = sysstate[i];
     for (int j = 0; j < sysState->Velocity.size(); j++, i++)
         sysState->Velocity[j] = sysstate[i];
+    sysState->m = sysstate[i];
+    i++;
 }
 
 vec AircraftModel::convertSysStateToVector()
@@ -108,6 +118,7 @@ vec AircraftModel::convertSysStateToVector()
     {
         state.push_back(temp[i]);
     }
+    state.push_back(sysState->m);
     StateRtn = state;
     return StateRtn;
 }
@@ -126,6 +137,7 @@ vec AircraftModel::computeSysStateDerivate()
     {
         derivate.push_back(temp[i]);
     }
+    derivate.push_back(this->getAirframe()->getPropulsion()->getMassflow());
     DerivateRtn = derivate;
     return DerivateRtn;
 }
