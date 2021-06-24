@@ -99,6 +99,7 @@ public:
     void UpdateDerivate(double timeCur, AircraftModel *pAirObject);
 
     vec getCommand() const { return command; }
+    double calcuAlpha(AircraftModel *pAirObject);
 
 private:
     AircraftModel *pAirObj;

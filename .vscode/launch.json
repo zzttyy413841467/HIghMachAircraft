@@ -14,7 +14,7 @@
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}/HighMachAircraft//Output/bin",
       "environment": [],
-      "externalConsole": true,
+      "externalConsole": false,
       //"console":"internalConsole",
       "MIMode": "gdb",
       "miDebuggerPath": "C:/mingw_w64/mingw64/bin/gdb.exe",

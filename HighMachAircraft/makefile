@@ -39,11 +39,11 @@ BIN_TARGET=${BIN_DIR}/${executable}
 
 # 终极目标规则：生成可执行文件
 ${BIN_TARGET}:${OBJ}
-	${CC} ${OBJ} -o $@
+	${CC}  ${OBJ} -o $@
 
 # 子目标规则：生成链接文件
 ${OBJ_DIR}/%.o:${SRC_DIR}/%.cpp
-	${CC} -o $@ -c -g $< -I${INC_DIR} 
+	${CC} -g -o $@ -c  $< -I${INC_DIR} 
 #
 #clean规则
 #.PHONY: clean

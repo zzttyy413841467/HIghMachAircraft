@@ -97,6 +97,7 @@ private:
     vec m_Force;
     vec m_acceleration;
     StandardAtmosphere SA;
+    int AeroStageFlag;
 };
 
 class Propulsion : public AircraftBase
@@ -112,6 +113,7 @@ public:
     void UpdateDerivate(double timeCur, AircraftModel *pAirObject);
 
     double getMassflow() const { return massflow; }
+    double getMassDerivate() const { return massDerivate; }
     double getThrustTotal() const { return thrustTotal; }
     double getMass() const { return mass; }
 
@@ -125,6 +127,7 @@ private:
     double timeFlightNow;
     double mass;
     double massflow;
+    double massDerivate;
     double thrustTotal;
     int AeroStageFlag;
 };
@@ -145,6 +148,8 @@ public:
     double getSref() const { return Sref; }
     double getCl() const { return Cl; }
     double getCd() const { return Cd; }
+    double getCl_alpha() const { return Cl_alpha; }
+    double getCd_alpha() const { return Cd_alpha; }
 
     void getFileOutputItemName(vector<string> &FileOutItemName);
     friend ostream &operator<<(ostream &os, const AeroData &pObj);
@@ -156,6 +161,8 @@ private:
     static const double Lref;
     double Cl;
     double Cd;
+    double Cl_alpha;
+    double Cd_alpha;
 };
 
 #endif

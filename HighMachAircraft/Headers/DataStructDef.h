@@ -34,7 +34,6 @@ public:
     double FlightTime;
     vec Position;
     vec Velocity;
-    vec Acceleration;
     double m;
     AircraftInfo(/* args */);
     ~AircraftInfo();

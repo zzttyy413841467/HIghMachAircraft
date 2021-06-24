@@ -43,7 +43,9 @@ public:
     FlightController *getFlightController() { return flightController; }
     SysState *getSysState() { return sysState; }
 
+    void getAircraftInfo(AircraftInfo &airInfo);
     vec operator()(double t, const vec &sysstate);
+    double getTimeStep() const { return TimeStep; }
 
     int getFlightPhase() const { return FlightPhase; }
     void getFileOutoutItemName(vector<string> &FileOutputItemName);
@@ -51,6 +53,7 @@ public:
     friend ostream &operator<<(ostream &os, const AircraftModel &pAirObject);
 
     bool phaseChangeFlag;
+    double e_theta;
 };
 
 #endif

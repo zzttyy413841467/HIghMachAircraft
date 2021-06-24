@@ -16,6 +16,7 @@ AircraftModel::AircraftModel()
     phaseChangeFlag = true;
     AircraftModels.push_back(airframe);
     AircraftModels.push_back(flightController);
+    e_theta = 0;
 }
 
 AircraftModel::~AircraftModel()
@@ -29,7 +30,10 @@ void AircraftModel::Initial()
 {
     t_flight = 0;
     sysState->Position.assign(3, 0);
+    sysState->Position[1] = 10;
     sysState->Velocity.assign(3, 0);
+    sysState->Velocity[0] = 0.01;
+    sysState->m = 23000;
     airframe->Initial();
     flightController->Initial();
 }
@@ -66,9 +70,11 @@ void AircraftModel::AircraftStepOn()
 
     if (phaseChangeFlag == true)
     {
-        if (FlightPhase > 1)
+        if (FlightPhase > 2)
+        {
             this->getSysState()->setm(6500);
-        phaseChangeFlag = false;
+            phaseChangeFlag = false;
+        }
     }
 
     if (t_flight == 0)
@@ -77,6 +83,7 @@ void AircraftModel::AircraftStepOn()
         UpdateOutput(t_flight, this);
         UpdateDerivate(t_flight, this);
     }
+
     vec x0 = convertSysStateToVector();
     ode->ODEstep(x0, t_flight, *this, TimeStepTemp);
     convertVectorToSysState(x0);
@@ -137,10 +144,19 @@ vec AircraftModel::computeSysStateDerivate()
     {
         derivate.push_back(temp[i]);
     }
-    derivate.push_back(this->getAirframe()->getPropulsion()->getMassflow());
+    derivate.push_back(this->getAirframe()->getPropulsion()->getMassDerivate());
     DerivateRtn = derivate;
     return DerivateRtn;
 }
+
+void AircraftModel::getAircraftInfo(AircraftInfo &airInfo)
+{
+    airInfo.FlightTime = t_flight;
+    airInfo.Position = sysState->Position;
+    airInfo.Velocity = sysState->Velocity;
+    airInfo.m = sysState->m;
+}
+
 void AircraftModel::getFileOutoutItemName(vector<string> &FileOutputItemName)
 {
     FileOutputItemName.push_back("t_flight");

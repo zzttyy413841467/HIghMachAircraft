@@ -2,26 +2,53 @@
 #include "highmachaircraft.hpp"
 #include "Vector.h"
 #include "ceshi.h"
+#include "Airframe.h"
+#include "AircraftModel.h"
+#include <sstream>
 using namespace std;
 //#include "armadillo"
 
 int main()
 {
+    // ofstream SimuEndOut;
+    // string Output2FilePathName;
+    // stringstream ss;
 
-    cout << "Hello VSC" << endl;
-    double a = 1;
-    double 是 = 1.0;
-    string s = "${workspaceFolder}";
-    cout << 3 << endl;
-    cout << s << endl;
-    Vector<double> b(3);
-    b[0] = 1;
-    b[2] = b[1];
-    b.push_back(4);
-    TestVector1();
-    TestVector2();
-    Matrix<double> mat = ones(3, 3);
-    int i = mat.n_cols();
+    AircraftModel *Aircraft = NULL;
+
+    ofstream *AircarftFileOutObj = NULL;
+
+    AircraftInfo aircraftinfo;
+
+    double a = 0;
+
+    Aircraft = new AircraftModel;
+    AircarftFileOutObj = new ofstream;
+    Aircraft->CreateAirObjOutputFile(*AircarftFileOutObj);
+    Aircraft->Initial();
+    Aircraft->getAircraftInfo(aircraftinfo);
+    vec Vel;
+    while (1)
+    {
+        Aircraft->AircraftStepOn();
+        Aircraft->getAircraftInfo(aircraftinfo);
+        if (aircraftinfo.FlightTime > 11)
+        {
+            a = 1;
+        }
+        if (aircraftinfo.FlightTime > 15.006)
+        {
+            a = 2;
+            Vel = Aircraft->getSysState()->Velocity;
+            Aircraft->e_theta += Aircraft->getTimeStep() * (Vel[1] - 5.0 / 180.0 * pi);
+        }
+        if (aircraftinfo.Position[1] > 25000)
+        {
+            *(AircarftFileOutObj) << (*Aircraft) << endl;
+            break;
+        }
+    }
+
     system("pause");
     return 0;
 }
