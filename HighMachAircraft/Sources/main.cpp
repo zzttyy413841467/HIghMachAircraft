@@ -21,7 +21,6 @@ int main()
     AircraftInfo aircraftinfo;
 
     double a = 0;
-
     Aircraft = new AircraftModel;
     AircarftFileOutObj = new ofstream;
     Aircraft->CreateAirObjOutputFile(*AircarftFileOutObj);
@@ -32,21 +31,21 @@ int main()
     {
         Aircraft->AircraftStepOn();
         Aircraft->getAircraftInfo(aircraftinfo);
-        if (aircraftinfo.FlightTime > 11)
+        if (Aircraft->getFlightPhase()==2 && aircraftinfo.FlightTime > 15.006)
         {
-            a = 1;
-        }
-        if (aircraftinfo.FlightTime > 15.006)
-        {
-            a = 2;
-            Vel = Aircraft->getSysState()->Velocity;
+            Vel = aircraftinfo.Velocity;
             Aircraft->e_theta += Aircraft->getTimeStep() * (Vel[1] - 5.0 / 180.0 * pi);
         }
-        if (aircraftinfo.Position[1] > 25000)
+        if (Aircraft->getFlightPhase() == 3 && Aircraft->heightFlag == true)
         {
-            *(AircarftFileOutObj) << (*Aircraft) << endl;
-            break;
+            Vel = aircraftinfo.Velocity;
+            Aircraft->e_theta += Aircraft->getTimeStep() * (Vel[0] - 1800);
         }
+        // if (aircraftinfo.Position[1] > 25000)
+        // {
+        //     break;
+        // }
+        *(AircarftFileOutObj) << (*Aircraft) << endl; 
     }
 
     system("pause");

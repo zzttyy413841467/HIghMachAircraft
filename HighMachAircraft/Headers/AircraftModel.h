@@ -54,6 +54,8 @@ public:
 
     bool phaseChangeFlag;
     double e_theta;
+    double e_v;
+    bool heightFlag;
 };
 
 #endif

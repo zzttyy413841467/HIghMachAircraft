@@ -148,6 +148,10 @@ public:
     double getSref() const { return Sref; }
     double getCl() const { return Cl; }
     double getCd() const { return Cd; }
+    double getCl(double alpha,AircraftModel *pAirObject);
+    double getCd(double alpha, AircraftModel *pAirObject);
+    double getCl_alpha(double alpha, AircraftModel *pAirObject);
+    double getCd_alpha(double alpha, AircraftModel *pAirObject);
     double getCl_alpha() const { return Cl_alpha; }
     double getCd_alpha() const { return Cd_alpha; }
 

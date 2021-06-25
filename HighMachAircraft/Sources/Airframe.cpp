@@ -265,7 +265,7 @@ void Propulsion::UpdateState(double timeCur, AircraftModel *pAirObject)
     default:
         massflow = 0.55 * V * rho / 14.9;
         massDerivate = -massflow;
-        Is = (-68 * ma * ma + 454 * ma) * 9.8;
+        Is = (-68 * ma * ma + 454 * ma + 826) * 9.8;
         thrustTotal = massflow * Is;
         if (mass < 3300)
             massDerivate = 0;
@@ -359,6 +359,109 @@ void AeroData::UpdateDerivate(double timeCur, AircraftModel *pAirObject)
 }
 void AeroData::getFileOutputItemName(vector<string> &FileOutItemName)
 {
+}
+
+double AeroData::getCl(double alpha_input,AircraftModel *pAirObject)
+{
+    double alpha = alpha_input * 180.0 / pi;
+    double ma = pAirObject->getAirframe()->getDynamics()->getMa();
+    int stage = pAirObject->getFlightPhase();
+    double Cl_out;
+    switch (stage)
+    {
+    case 1:
+        Cl_out = (0.008927 * ma - 0.03518) * alpha * alpha + (-0.7577 * ma + 4.991) * alpha + (-2.05 * ma + 7.619);
+        break;
+    case 2:
+        Cl_out = (0.008927 * ma - 0.03518) * alpha * alpha + (-0.7577 * ma + 4.991) * alpha + (-2.05 * ma + 7.619);
+        break;
+    case 3:
+        Cl_out = (-0.001833 * ma + 0.01119) * alpha * alpha + (-0.1373 * ma + 1.164) * alpha + (-0.007293 * ma + 0.1055);
+        break;
+    case 4:
+        Cl_out = (-0.001833 * ma + 0.01119) * alpha * alpha + (-0.1373 * ma + 1.164) * alpha + (-0.007293 * ma + 0.1055);
+        break;
+    default:
+        break;
+    }
+    return Cl_out;
+}
+double AeroData::getCd(double alpha_input, AircraftModel *pAirObject)
+{
+    double alpha = alpha_input * 180.0 / pi;
+    double ma = pAirObject->getAirframe()->getDynamics()->getMa();
+    int stage = pAirObject->getFlightPhase();
+    double Cd_out;
+    switch (stage)
+    {
+    case 1:
+        Cd_out = (0.0002439 * ma - 0.000694) * alpha * alpha * alpha + (-0.01328 * ma + 0.08511) * alpha * alpha + (-0.03909 * ma + 0.1584) * alpha + (-0.1592 * ma + 2.354);
+        break;
+    case 2:
+        Cd_out = (0.0002439 * ma - 0.000694) * alpha * alpha * alpha + (-0.01328 * ma + 0.08511) * alpha * alpha + (-0.03909 * ma + 0.1584) * alpha + (-0.1592 * ma + 2.354);
+        break;
+    case 3:
+        Cd_out = (-3.646e-5 * ma + 0.0002542) * alpha * alpha * alpha + (-0.002206 * ma + 0.01945) * alpha * alpha + (0.0004566 * ma + 0.0001816) * alpha + (-0.02079 * ma + 0.3597);
+        break;
+    case 4:
+        Cd_out = (-3.646e-5 * ma + 0.0002542) * alpha * alpha * alpha + (-0.002206 * ma + 0.01945) * alpha * alpha + (0.0004566 * ma + 0.0001816) * alpha + (-0.02079 * ma + 0.4172);
+        break;
+    default:
+        break;
+    }
+    return Cd_out;
+}
+
+double AeroData::getCl_alpha(double alpha_input, AircraftModel *pAirObject)
+{
+    double alpha = alpha_input * 180.0 / pi;
+    double ma = pAirObject->getAirframe()->getDynamics()->getMa();
+    int stage = pAirObject->getFlightPhase();
+    double Cl_alpha_out;
+    switch (stage)
+    {
+    case 1:
+        Cl_alpha_out = (2 * (0.008927 * ma - 0.03518) * alpha + (-0.7577 * ma + 4.991)) * 180.0 / pi;
+        break;
+    case 2:
+        Cl_alpha_out = (2 * (0.008927 * ma - 0.03518) * alpha + (-0.7577 * ma + 4.991)) * 180.0 / pi;
+        break;
+    case 3:
+        Cl_alpha_out = (2 * (-0.001833 * ma + 0.01119) * alpha + (-0.1373 * ma + 1.164)) * 180.0 / pi;
+        break;
+    case 4:
+        Cl_alpha_out = (2 * (-0.001833 * ma + 0.01119) * alpha + (-0.1373 * ma + 1.164)) * 180.0 / pi;
+        break;
+    default:
+        break;
+    }
+    return Cl_alpha_out;
+}
+
+double AeroData::getCd_alpha(double alpha_input, AircraftModel *pAirObject)
+{
+    double alpha = alpha_input * 180.0 / pi;
+    double ma = pAirObject->getAirframe()->getDynamics()->getMa();
+    int stage = pAirObject->getFlightPhase();
+    double Cd_alpha_out;
+    switch (stage)
+    {
+    case 1:
+        Cd_alpha_out = (3 * (0.0002439 * ma - 0.000694) * alpha * alpha + 2 * (-0.01328 * ma + 0.08511) * alpha + (-0.03909 * ma + 0.1584)) * 180.0 / pi;
+        break;
+    case 2:
+        Cd_alpha_out = (3 * (0.0002439 * ma - 0.000694) * alpha * alpha + 2 * (-0.01328 * ma + 0.08511) * alpha + (-0.03909 * ma + 0.1584)) * 180.0 / pi;
+        break;
+    case 3:
+        Cd_alpha_out = (3 * (-3.646e-5 * ma + 0.0002542) * alpha * alpha + 2 * (-0.002206 * ma + 0.01945) * alpha + (0.0004566 * ma + 0.0001816)) * 180.0 / pi;
+        break;
+    case 4:
+        Cd_alpha_out = (3 * (-3.646e-5 * ma + 0.0002542) * alpha * alpha + 2 * (-0.002206 * ma + 0.01945) * alpha + (0.0004566 * ma + 0.0001816)) * 180.0 / pi;
+        break;
+    default:
+        break;
+    }
+    return Cd_alpha_out;
 }
 
 ostream &operator<<(ostream &os, const AeroData &pObj)

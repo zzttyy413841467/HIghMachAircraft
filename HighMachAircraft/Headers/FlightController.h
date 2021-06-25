@@ -118,6 +118,7 @@ public:
     void UpdateDerivate(double timeCur, AircraftModel *pAirObject);
 
     vec getCommand() const { return command; }
+    vec calcuControl(AircraftModel *pAirObject);
 
 private:
     AircraftModel *pAirObj;

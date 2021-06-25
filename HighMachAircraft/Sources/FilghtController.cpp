@@ -184,14 +184,14 @@ void Guidance::UpdateGuidancePhase(double timeCur, AircraftModel *pAirObject)
         if (GuidancePhase == 1)
         {
             GuidancePhase = 2;
-            cout << "ÅÀÉý¶Î" << endl;
+            cout << "çˆ¬å‡æ®µ\t" << timeCur << endl;
         }
         if (GuidancePhase == 2)
         {
             if (H > 25000)
             {
                 GuidancePhase = 3;
-                cout << "Ñ²º½¶Î" << endl;
+                cout << "å·¡èˆªæ®µ\t" << timeCur << endl;
             }
         }
         if (GuidancePhase == 3)
@@ -199,7 +199,7 @@ void Guidance::UpdateGuidancePhase(double timeCur, AircraftModel *pAirObject)
             if (m < 3310)
             {
                 GuidancePhase = 4;
-                cout << "·µº½¶Î" << endl;
+                cout << "è¿”èˆªæ®µ\t" << timeCur << endl;
             }
         }
     }
@@ -277,9 +277,6 @@ double SecondGuidance::calcuAlpha(AircraftModel *pAirObject)
     double Q = pAirObject->getAirframe()->getDynamics()->getQ();
     double S = pAirObject->getAirframe()->getAeroData()->getSref();
     double ma = pAirObject->getAirframe()->getDynamics()->getMa();
-    double Cl1 = 0.008927 * ma - 0.03518;
-    double Cl2 = -0.7577 * ma + 4.991;
-    double Cl3 = -2.05 * ma + 7.619;
     vec Vel = pAirObject->getAirframe()->getDynamics()->getVelocity();
     double theta = 5.0 / r2d;
     double V = Vel[0];
@@ -287,14 +284,13 @@ double SecondGuidance::calcuAlpha(AircraftModel *pAirObject)
     double x1 = 0.05;
     double Cl;
     double Cl_alpha;
-    
+
     while (fabs(x1 - x0) / fabs(x1) > 1e-12)
     {
         x0 = x1;
-        Cl = Cl1 * x0 * r2d * x0 * r2d + Cl2 * x0 * r2d + Cl3;
-        Cl_alpha = 2 * Cl1 * x0 * r2d * r2d + Cl2 * r2d;
-        x1 = x0 - ((thrust * sin(x0) + Q * S * Cl - mass * g * cos(Vel[1]))/mass/V+1.414*(Vel[1]-theta+pAirObject->e_theta)) / ((thrust * cos(x0) + Q * S * Cl_alpha)/mass/V);
-        //x1 = x0 - (thrust * sin(x0) + Q * S * Cl - mass * g * cos(Vel[1])) / (thrust * cos(x0) + Q * S * Cl_alpha);
+        Cl = pAirObject->getAirframe()->getAeroData()->getCl(x0, pAirObject);
+        Cl_alpha = pAirObject->getAirframe()->getAeroData()->getCl_alpha(x0, pAirObject);
+        x1 = x0 - ((thrust * sin(x0) + Q * S * Cl - mass * g * cos(Vel[1])) / mass / V + 1.414 * (Vel[1] - theta + pAirObject->e_theta)) / ((thrust * cos(x0) + Q * S * Cl_alpha) / mass / V);
     }
 
     if (x1 >= 25.0 / 57.3)
@@ -315,29 +311,16 @@ void SecondGuidance::UpdateState(double timeCur, AircraftModel *pAirObject)
 
 void SecondGuidance::UpdateOutput(double timeCur, AircraftModel *pAirObject)
 {
-    double alpha0 = 4.89 / 57.3;
-    double alpha1 = -2 / 57.3;
-    double alpha2 = 2 / 57.3;
-    double t0 = 15.006;
-    double t1 = 300;
-    double t2 = 410;
     double alpha = 0;
-
     if (timeCur < 15.006)
     {
         command[0] = 10.0 / 180 * pi;
         command[1] = 0;
     }
-    else if (t0 <= timeCur < t1)
-    {
-        alpha = calcuAlpha(pAirObject);
-        command[0] = (alpha1 - alpha0) / (t1 - t0) * (timeCur - t0) + alpha0;
-        command[0] = alpha;
-        command[1] = 0;
-    }
     else
     {
-        command[0] = (alpha2 - alpha1) / (t2 - t1) * (timeCur - t1) + alpha1;
+        alpha = calcuAlpha(pAirObject);
+        command[0] = alpha;
         command[1] = 0;
     }
 }
@@ -371,8 +354,71 @@ void ThirdGuidance::UpdateState(double timeCur, AircraftModel *pAirObject)
 
 void ThirdGuidance::UpdateOutput(double timeCur, AircraftModel *pAirObject)
 {
+    double h = pAirObject->getAirframe()->getDynamics()->getH();
+    if (pAirObject->heightFlag == false)
+    {
+        if (h < 29500.0)
+        {
+            command[0] = 3.5 / 57.3;
+            command[1] = 0;
+        }
+        else
+        {
+            pAirObject->heightFlag = true;
+        }
+    }
+    else
+    {
+        command[0] = 2.7 / 57.3;
+        command[1] = 0;
+    }
 }
 
 void ThirdGuidance::UpdateDerivate(double timeCur, AircraftModel *pAirObject)
 {
+}
+
+vec ThirdGuidance::calcuControl(AircraftModel *pAirObject)
+{
+    double r2d = 180.0 / pi;
+    double thrust = pAirObject->getAirframe()->getPropulsion()->getThrustTotal();
+    double mass = pAirObject->getAirframe()->getPropulsion()->getMass();
+    double g = pAirObject->getAirframe()->getDynamics()->getG();
+    double Q = pAirObject->getAirframe()->getDynamics()->getQ();
+    double S = pAirObject->getAirframe()->getAeroData()->getSref();
+    double ma = pAirObject->getAirframe()->getDynamics()->getMa();
+    double Cl1 = (-0.001833 * ma + 0.01119);
+    double Cl2 = (-0.1373 * ma + 1.164);
+    double Cl3 = (-0.007293 * ma + 0.1055);
+    double Cd1 = (-3.646e-5 * ma + 0.0002542);
+    double Cd2 = (-0.002206 * ma + 0.01945);
+    double Cd3 = (0.0004566 * ma + 0.0001816);
+    double Cd4 = (-0.02079 * ma + 0.3597);
+    vec Vel = pAirObject->getAirframe()->getDynamics()->getVelocity();
+    double theta = 5.0 / r2d;
+    double V = Vel[0];
+    double x0 = 0.03;
+    double x1 = 0.05;
+    double Cl;
+    double Cl_alpha;
+    double Cd;
+    double Cd_alpha;
+
+    while (fabs(x1 - x0) / fabs(x1) > 1e-12)
+    {
+        x0 = x1;
+        Cl = Cl1 * x0 * r2d * x0 * r2d + Cl2 * x0 * r2d + Cl3;
+        Cl_alpha = 2 * Cl1 * x0 * r2d * r2d + Cl2 * r2d;
+        x1 = x0 - ((thrust * sin(x0) + Q * S * Cl - mass * g * cos(Vel[1])) / mass / V + 1.414 * (Vel[1] - theta + pAirObject->e_theta)) / ((thrust * cos(x0) + Q * S * Cl_alpha) / mass / V);
+        //x1 = x0 - (thrust * sin(x0) + Q * S * Cl - mass * g * cos(Vel[1])) / (thrust * cos(x0) + Q * S * Cl_alpha);
+    }
+
+    if (x1 >= 25.0 / 57.3)
+    {
+        x1 = 25.0 / 57.3;
+    }
+    if (x1 <= -25.0 / 57.3)
+    {
+        x1 = -25.0 / 57.3;
+    }
 }

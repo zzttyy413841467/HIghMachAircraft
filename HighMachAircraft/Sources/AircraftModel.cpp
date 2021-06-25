@@ -17,6 +17,8 @@ AircraftModel::AircraftModel()
     AircraftModels.push_back(airframe);
     AircraftModels.push_back(flightController);
     e_theta = 0;
+    e_v = 0;
+    heightFlag = false;
 }
 
 AircraftModel::~AircraftModel()
@@ -36,6 +38,7 @@ void AircraftModel::Initial()
     sysState->m = 23000;
     airframe->Initial();
     flightController->Initial();
+    cout << "起飞段\t" << t_flight << endl;
 }
 
 void AircraftModel::UpdateState(double timeCur, AircraftModel *pAirObject)
