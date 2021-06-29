@@ -26,12 +26,13 @@ int main()
     Aircraft->CreateAirObjOutputFile(*AircarftFileOutObj);
     Aircraft->Initial();
     Aircraft->getAircraftInfo(aircraftinfo);
+    bool flag1 = true;
     vec Vel;
     while (1)
     {
         Aircraft->AircraftStepOn();
         Aircraft->getAircraftInfo(aircraftinfo);
-        if (Aircraft->getFlightPhase()==2 && aircraftinfo.FlightTime > 15.006)
+        if (Aircraft->getFlightPhase() == 2 && aircraftinfo.FlightTime > 15.006)
         {
             Vel = aircraftinfo.Velocity;
             Aircraft->e_theta += Aircraft->getTimeStep() * (Vel[1] - 5.0 / 180.0 * pi);
@@ -39,13 +40,16 @@ int main()
         if (Aircraft->getFlightPhase() == 3 && Aircraft->heightFlag == true)
         {
             Vel = aircraftinfo.Velocity;
-            Aircraft->e_theta += Aircraft->getTimeStep() * (Vel[0] - 1800);
+            if (flag1 && aircraftinfo.FlightTime > 700)
+            {
+                Aircraft->e_v = 0;
+                flag1 = false;
+            }
+
+            Aircraft->e_v += Aircraft->getTimeStep() * (Vel[0] - 1800);
         }
-        // if (aircraftinfo.Position[1] > 25000)
-        // {
-        //     break;
-        // }
-        *(AircarftFileOutObj) << (*Aircraft) << endl; 
+
+        *(AircarftFileOutObj) << (*Aircraft) << endl;
     }
 
     system("pause");

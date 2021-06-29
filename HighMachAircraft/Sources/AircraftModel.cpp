@@ -68,7 +68,7 @@ void AircraftModel::UpdateDerivate(double timeCur, AircraftModel *pAirObject)
 
 void AircraftModel::AircraftStepOn()
 {
-    TimeStep = 0.01;
+    TimeStep = 0.1;
     double TimeStepTemp = TimeStep;
 
     if (phaseChangeFlag == true)

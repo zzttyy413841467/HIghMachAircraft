@@ -164,7 +164,7 @@ void Dynamics::UpdateOutput(double timeCur, AircraftModel *pAirObject)
     Sref = pAirObject->getAirframe()->getAeroData()->getSref();
     ThrustForce = pAirObject->getAirframe()->getPropulsion()->getThrustTotal();
     mass = pAirObject->getAirframe()->getPropulsion()->getMass();
-    g = SA.getg(H / 1000.0);
+    g = SA.getg(H);
     AeroForce[0] = Q * Sref * (pAirObject->getAirframe()->getAeroData()->getCd());
     AeroForce[1] = Q * Sref * (pAirObject->getAirframe()->getAeroData()->getCl());
 }
@@ -177,7 +177,7 @@ void Dynamics::UpdateDerivate(double timeCur, AircraftModel *pAirObject)
     VelocityDerivate[0] = (ThrustForce * cos(Alpha) - AeroForce[0] - mass * g * sin(Velocity[1])) / mass;
     VelocityDerivate[1] = (ThrustForce * sin(Alpha) * cos(Sigma) + AeroForce[1] * cos(Sigma) - mass * g * cos(Velocity[1])) / mass / Velocity[0];
     VelocityDerivate[2] = -(ThrustForce * sin(Alpha) * sin(Sigma) + AeroForce[1] * sin(Sigma)) / mass / Velocity[0] / cos(Velocity[1]);
-    if(timeCur<11)
+    if (timeCur < 11)
     {
         VelocityDerivate[0] = (ThrustForce * cos(Alpha) - AeroForce[0]) / mass;
         VelocityDerivate[1] = 0;
@@ -201,8 +201,8 @@ void Dynamics::getFileOutputItemName(vector<string> &FileOutItemName)
 
 ostream &operator<<(ostream &os, const Dynamics &pObj)
 {
-    os << pObj.Position[0] << "\t" << pObj.Position[0] << "\t" << pObj.Position[0] << "\t"
-       << pObj.Velocity[0] << "\t" << pObj.Velocity[0] << "\t" << pObj.Velocity[0] << "\t"
+    os << pObj.Position[0] << "\t" << pObj.Position[1] << "\t" << pObj.Position[2] << "\t"
+       << pObj.Velocity[0] << "\t" << pObj.Velocity[1] << "\t" << pObj.Velocity[2] << "\t"
        << pObj.Alpha << "\t" << pObj.Beta << "\t" << pObj.Sigma << "\t" << pObj.Ma << "\t";
 
     return os;
@@ -238,11 +238,18 @@ void Propulsion::UpdateState(double timeCur, AircraftModel *pAirObject)
     ma = pAirObject->getAirframe()->getDynamics()->getMa();
     double rho = pAirObject->getAirframe()->getDynamics()->getrho();
     double V = pAirObject->getAirframe()->getDynamics()->getVelScalar();
-
+    vec com = pAirObject->getFlightController()->getGuidance()->getCommand();
     mass = pAirObject->getSysState()->m;
 
     AeroStageFlag = pAirObject->getFlightPhase();
-
+    if (pAirObject->heightFlag == false)
+    {
+        equ_ratio = 1.4;
+    }
+    else
+    {
+        equ_ratio = com[2];
+    }
     double Is;
     switch (AeroStageFlag)
     {
@@ -250,7 +257,7 @@ void Propulsion::UpdateState(double timeCur, AircraftModel *pAirObject)
         thrustTotal = 4.803e4 - 2231 * h - 1.322e4 * ma - 200.3 * h * h + 809.2 * h * ma + 3.035e4 * ma * ma + 9.583 * pow(h, 3) + 157 * pow(h, 2) * ma - 3500 * h * pow(ma, 2) + 3483 * pow(ma, 3) - 0.06638 * pow(h, 4) - 5.22 * pow(h, 3) * ma + 67.72 * pow(h, 2) * pow(ma, 2) + 34.75 * h * pow(ma, 3) - 426.6 * pow(ma, 4);
         massflow = 4.998 - 0.3946 * h + 0.2715 * ma - 0.00191 * h * h - 0.005939 * h * ma + 1.988 * ma * ma + 0.0003694 * pow(h, 3) + 0.01403 * pow(h, 2) * ma - 0.276 * h * pow(ma, 2) + 0.4432 * pow(ma, 3) - 2.863e-8 * pow(h, 4) - 4.763e-4 * pow(h, 3) * ma + 0.00623 * pow(h, 2) * pow(ma, 2) - 0.004347 * h * pow(ma, 3) - 0.03359 * pow(ma, 4);
         thrustTotal = 4 * thrustTotal;
-        massDerivate = -4*massflow;
+        massDerivate = -4 * massflow;
         if (mass < 14000)
             massDerivate = 0;
         break;
@@ -263,10 +270,12 @@ void Propulsion::UpdateState(double timeCur, AircraftModel *pAirObject)
             massDerivate = 0;
         break;
     default:
-        massflow = 0.55 * V * rho / 14.9;
+
+        massflow = 0.55 * V * rho / 14.9 * equ_ratio;
         massDerivate = -massflow;
-        Is = (-68 * ma * ma + 454 * ma + 826) * 9.8;
+        Is = (-68 * ma * ma + 454 * ma + 826 - 600 * (equ_ratio - 1.0)) * 9.8;
         thrustTotal = massflow * Is;
+
         if (mass < 3300)
             massDerivate = 0;
         break;
@@ -283,12 +292,13 @@ void Propulsion::UpdateDerivate(double timeCur, AircraftModel *pAirObject)
 void Propulsion::getFileOutputItemName(vector<string> &FileOutItemName)
 {
     FileOutItemName.push_back("Massflow");
+    FileOutItemName.push_back("Mass");
     FileOutItemName.push_back("ThrustTotal");
 }
 
 ostream &operator<<(ostream &os, const Propulsion &pObj)
 {
-    os << pObj.massflow << "\t" << pObj.thrustTotal << "\t";
+    os << pObj.massflow << "\t" << pObj.mass << "\t" << pObj.thrustTotal << "\t";
     return os;
 }
 
@@ -361,7 +371,7 @@ void AeroData::getFileOutputItemName(vector<string> &FileOutItemName)
 {
 }
 
-double AeroData::getCl(double alpha_input,AircraftModel *pAirObject)
+double AeroData::getCl(double alpha_input, AircraftModel *pAirObject)
 {
     double alpha = alpha_input * 180.0 / pi;
     double ma = pAirObject->getAirframe()->getDynamics()->getMa();

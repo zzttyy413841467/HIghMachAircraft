@@ -57,7 +57,7 @@ public:
     double getBeta() const { return Beta; }
     double getSigma() const { return Sigma; }
     double getMa() const { return Ma; }
-    double getG() const { return SA.getg(H / 1000); }
+    double getG() const { return SA.getg(H); }
     double getH() const { return H; }
     double getQ() const { return Q; }
     double getVelScalar() const { return VelScalar; }
@@ -130,6 +130,7 @@ private:
     double massDerivate;
     double thrustTotal;
     int AeroStageFlag;
+    double equ_ratio;
 };
 
 class AeroData : public AircraftBase
