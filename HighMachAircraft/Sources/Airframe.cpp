@@ -194,16 +194,17 @@ void Dynamics::getFileOutputItemName(vector<string> &FileOutItemName)
     FileOutItemName.push_back("VelocityY");
     FileOutItemName.push_back("VelocityZ");
     FileOutItemName.push_back("Alpha");
-    FileOutItemName.push_back("Beta");
     FileOutItemName.push_back("Sigma");
     FileOutItemName.push_back("Ma");
+    FileOutItemName.push_back("L");
+    FileOutItemName.push_back("D");
 }
 
 ostream &operator<<(ostream &os, const Dynamics &pObj)
 {
     os << pObj.Position[0] << "\t" << pObj.Position[1] << "\t" << pObj.Position[2] << "\t"
        << pObj.Velocity[0] << "\t" << pObj.Velocity[1] << "\t" << pObj.Velocity[2] << "\t"
-       << pObj.Alpha << "\t" << pObj.Beta << "\t" << pObj.Sigma << "\t" << pObj.Ma << "\t";
+       << pObj.Alpha << "\t" << pObj.Sigma << "\t" << pObj.Ma << "\t" << pObj.AeroForce[1] << "\t" << pObj.AeroForce[0] << "\t";
 
     return os;
 }

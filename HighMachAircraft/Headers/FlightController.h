@@ -28,6 +28,7 @@ public:
 
     void getFileOutputItemName(vector<string> &FileOutItemName);
     friend ostream &operator<<(ostream &os, const FlightController &pObj);
+
 private:
     AircraftModel *pAirObj;
     Guidance *guidance;
@@ -99,7 +100,7 @@ public:
     void UpdateDerivate(double timeCur, AircraftModel *pAirObject);
 
     vec getCommand() const { return command; }
-    double calcuAlpha(AircraftModel *pAirObject);
+    double calcuAlpha(double timeCur, AircraftModel *pAirObject);
 
 private:
     AircraftModel *pAirObj;
@@ -118,7 +119,7 @@ public:
     void UpdateDerivate(double timeCur, AircraftModel *pAirObject);
 
     vec getCommand() const { return command; }
-    vec calcuControl(double timeCur,AircraftModel *pAirObject);
+    vec calcuControl(double timeCur, AircraftModel *pAirObject);
 
 private:
     AircraftModel *pAirObj;

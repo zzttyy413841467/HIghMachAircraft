@@ -28,6 +28,7 @@ int main()
     Aircraft->getAircraftInfo(aircraftinfo);
     bool flag1 = true;
     vec Vel;
+    double theta_ref = 0;
     while (1)
     {
         Aircraft->AircraftStepOn();
@@ -35,7 +36,27 @@ int main()
         if (Aircraft->getFlightPhase() == 2 && aircraftinfo.FlightTime > 15.006)
         {
             Vel = aircraftinfo.Velocity;
-            Aircraft->e_theta += Aircraft->getTimeStep() * (Vel[1] - 5.0 / 180.0 * pi);
+            if (aircraftinfo.FlightTime < 40)
+            {
+                theta_ref = 10.0 / r2d;
+            }
+            else if (aircraftinfo.FlightTime < 70)
+            {
+                theta_ref = 25.0 / r2d;
+            }
+            else if (aircraftinfo.FlightTime < 235)
+            {
+                theta_ref = 6.3 / r2d;
+            }
+            else if (aircraftinfo.FlightTime < 312)
+            {
+                theta_ref = 4.7 / r2d;
+            }
+            else if (aircraftinfo.FlightTime < 350)
+            {
+                theta_ref = 3.5 / r2d;
+            }
+            Aircraft->e_theta += Aircraft->getTimeStep() * (Vel[1] - theta_ref);
         }
         if (Aircraft->getFlightPhase() == 3 && Aircraft->heightFlag == true)
         {
@@ -49,6 +70,10 @@ int main()
             Aircraft->e_v += Aircraft->getTimeStep() * (Vel[0] - 1800);
         }
 
+        if (Aircraft->getFlightPhase() == 3)
+        {
+            a = 1;
+        }
         *(AircarftFileOutObj) << (*Aircraft) << endl;
     }
 

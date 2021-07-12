@@ -208,11 +208,14 @@ void Guidance::UpdateGuidancePhase(double timeCur, AircraftModel *pAirObject)
 void Guidance::getFileOutputItemName(vector<string> &FileOutItemName)
 {
     FileOutItemName.push_back("GuidancePhase");
+    FileOutItemName.push_back("AlphaCommand");
+    FileOutItemName.push_back("SigmaCommand");
+    FileOutItemName.push_back("RatioCommand");
 }
 
 ostream &operator<<(ostream &os, const Guidance &pObj)
 {
-    os << pObj.GuidancePhase << "\t";
+    os << pObj.GuidancePhase << "\t" << pObj.command[0] << "\t" << pObj.command[1] << "\t" << pObj.command[2];
     return os;
 }
 
@@ -269,9 +272,9 @@ void SecondGuidance::Initial()
 {
 }
 
-double SecondGuidance::calcuAlpha(AircraftModel *pAirObject)
+double SecondGuidance::calcuAlpha(double timeCur, AircraftModel *pAirObject)
 {
-    double r2d = 180.0 / pi;
+
     double thrust = pAirObject->getAirframe()->getPropulsion()->getThrustTotal();
     double mass = pAirObject->getAirframe()->getPropulsion()->getMass();
     double g = pAirObject->getAirframe()->getDynamics()->getG();
@@ -279,7 +282,28 @@ double SecondGuidance::calcuAlpha(AircraftModel *pAirObject)
     double S = pAirObject->getAirframe()->getAeroData()->getSref();
     double ma = pAirObject->getAirframe()->getDynamics()->getMa();
     vec Vel = pAirObject->getAirframe()->getDynamics()->getVelocity();
-    double theta = 20 / r2d;
+    double theta = 0;
+    if (timeCur < 40)
+    {
+        theta = 10.0 / r2d;
+    }
+    else if (timeCur < 70)
+    {
+        theta = 25.0 / r2d;
+    }
+    else if (timeCur < 235)
+    {
+        theta = 6.3 / r2d;
+    }
+    else if (timeCur < 312)
+    {
+        theta = 4.7 / r2d;
+    }
+    else
+    {
+        theta = 3.5 / r2d;
+    }
+
     double V = Vel[0];
     double x0 = 0.03;
     double x1 = 0.05;
@@ -315,13 +339,13 @@ void SecondGuidance::UpdateOutput(double timeCur, AircraftModel *pAirObject)
     double alpha = 0;
     if (timeCur < 15.006)
     {
-        command[0] = 10.0 / 180 * pi;
+        command[0] = 9.0 / 180 * pi;
         command[1] = 0;
         command[2] = 0;
     }
     else
     {
-        alpha = calcuAlpha(pAirObject);
+        alpha = calcuAlpha(timeCur, pAirObject);
         command[0] = alpha;
         command[1] = 0;
         command[2] = 0;
@@ -388,7 +412,7 @@ void ThirdGuidance::UpdateDerivate(double timeCur, AircraftModel *pAirObject)
 
 vec ThirdGuidance::calcuControl(double timeCur, AircraftModel *pAirObject)
 {
-    double r2d = 180.0 / pi;
+
     double thrust = pAirObject->getAirframe()->getPropulsion()->getThrustTotal();
     double mass = pAirObject->getAirframe()->getPropulsion()->getMass();
     double g = pAirObject->getAirframe()->getDynamics()->getG();
@@ -412,7 +436,8 @@ vec ThirdGuidance::calcuControl(double timeCur, AircraftModel *pAirObject)
     double n = 0;
     if (timeCur > 1300 && timeCur < 2300)
     {
-        n = 10 * cos(2 * pi / 500.0 * (timeCur - 1300));
+        //n = 10 * cos(2 * pi / 200.0 * (timeCur - 1300));
+        n = 0;
     }
     double omega_h = 1.0 / 10;
     double omega_v = 1.0 / 10;

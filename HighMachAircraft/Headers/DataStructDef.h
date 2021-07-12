@@ -3,6 +3,7 @@
 #include "Vector.h"
 
 static const double pi = 3.141592653589793115998;
+static const double r2d = 180.0 / pi;
 
 class SysState
 {
