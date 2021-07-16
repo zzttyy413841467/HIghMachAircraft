@@ -13,7 +13,8 @@ int main()
     // ofstream SimuEndOut;
     // string Output2FilePathName;
     // stringstream ss;
-
+    vec aaaaa = {1.0, 2.0, 34.0, 1.0, 1E-10};
+    cout << aaaaa.size() << "\t" << aaaaa[4] << endl;
     AircraftModel *Aircraft = NULL;
 
     ofstream *AircarftFileOutObj = NULL;

@@ -118,6 +118,35 @@ public:
     return *this;
   }
 
+  Vector(initializer_list<Object> rhs)
+  {
+    theSize = rhs.size();
+    theCapacity = theSize + SPARE_CAPACITY;
+    if (theSize == 0)
+      objects = 0;
+    else
+      objects = new Object[theCapacity];
+    for (int i = 0; i < theSize; i++)
+    {
+      objects[i] = *(rhs.begin() + i);
+    }
+  }
+
+  Vector &operator=(initializer_list<Object> rhs)
+  {
+    theSize = rhs.size();
+    theCapacity = theSize + SPARE_CAPACITY;
+    if (theSize == 0)
+      objects = 0;
+    else
+      objects = new Object[theCapacity];
+    for (int i = 0; i < theSize; i++)
+    {
+      objects[i] = *(rhs.begin() + i);
+    }
+    return *this;
+  }
+
   bool empty() const
   {
     return size() == 0;

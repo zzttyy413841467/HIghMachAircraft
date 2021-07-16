@@ -437,7 +437,7 @@ vec ThirdGuidance::calcuControl(double timeCur, AircraftModel *pAirObject)
     if (timeCur > 1300 && timeCur < 2300)
     {
         //n = 10 * cos(2 * pi / 200.0 * (timeCur - 1300));
-        n = 0;
+        n = 20;
     }
     double omega_h = 1.0 / 10;
     double omega_v = 1.0 / 10;
@@ -445,7 +445,7 @@ vec ThirdGuidance::calcuControl(double timeCur, AircraftModel *pAirObject)
     double a1 = cos(theta) / mass;
     double a2 = 1.0 / mass;
     double a3 = 1.0 / mass / V / cos(theta);
-    double c1 = g * cos(theta) * cos(theta) - 2 * 0.707 * omega_h * V * sin(theta) - (h - 30000.0) * omega_h * omega_h + (1.414 * (Vel[0] - Vr) / 300.0 + pAirObject->e_v / 300 / 300.0) * sin(theta);
+    double c1 = g * cos(theta) * cos(theta) - 2 * 0.707 * omega_h * V * sin(theta) - (h - 30000.0) * omega_h * omega_h + (1.414 * (Vel[0] - Vr) * omega_v + pAirObject->e_v * omega_v * omega_v) * sin(theta);
     double c2 = g * sin(theta) - 1.414 * (Vel[0] - Vr) * omega_v - pAirObject->e_v * omega_v * omega_v;
     double c3 = n / V;
     double sigma = atan(c3 * a1 / c1 / a3);
