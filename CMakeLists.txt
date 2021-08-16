@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-SET(CMAKE_TOOLCHAIN_FILE "D:/vcpkg/vcpkg/scripts/buildsystems/vcpkg.cmake")
+SET(CMAKE_TOOLCHAIN_FILE "D:/vcpkg/scripts/buildsystems/vcpkg.cmake")
 project(HighMachAircraft VERSION 0.1 LANGUAGES CXX)
 
 set(CXX_STANDARD 17)
