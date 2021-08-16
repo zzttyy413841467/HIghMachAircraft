@@ -1,3 +1,4 @@
 /HighMachAircraft/Output/*
 /build
 !/HighMachAircraft/Output/bin/
+!/HighMachAircraft/Output/Sim/Placeholder
