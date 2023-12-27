@@ -8,15 +8,16 @@
 using namespace std;
 //#include "armadillo"
 
+
 int main()
 {
     // ofstream SimuEndOut;
     // string Output2FilePathName;
     // stringstream ss;
 
-    AircraftModel *Aircraft = NULL;
+    AircraftModel* Aircraft = NULL;
 
-    ofstream *AircarftFileOutObj = NULL;
+    ofstream* AircarftFileOutObj = NULL;
 
     AircraftInfo aircraftinfo;
 
@@ -46,18 +47,27 @@ int main()
             }
             else if (aircraftinfo.FlightTime < 235)
             {
-                theta_ref = 6.3 / r2d;
+                theta_ref = 4.2 / r2d;
             }
             else if (aircraftinfo.FlightTime < 312)
             {
-                theta_ref = 4.7 / r2d;
+                theta_ref = 5.5 / r2d;
             }
             else if (aircraftinfo.FlightTime < 350)
             {
-                theta_ref = 3.5 / r2d;
+                theta_ref = 4 / r2d;
+            }
+            else
+            {
+                theta_ref = 4 / r2d;
             }
             Aircraft->e_theta += Aircraft->getTimeStep() * (Vel[1] - theta_ref);
         }
+        if (Aircraft->getFlightPhase() == 3 && Aircraft->heightFlag == false)
+        {
+            Aircraft->e_theta += Aircraft->getTimeStep() * (Vel[1] - ((0.1 - 4) / 20 * (aircraftinfo.FlightTime - Aircraft->time_2) + 4) / r2d);
+        }
+
         if (Aircraft->getFlightPhase() == 3 && Aircraft->heightFlag == true)
         {
             Vel = aircraftinfo.Velocity;
@@ -70,10 +80,21 @@ int main()
             Aircraft->e_v += Aircraft->getTimeStep() * (Vel[0] - 1800);
         }
 
-        if (Aircraft->getFlightPhase() == 3)
+        if (Aircraft->getFlightPhase() == 4)
         {
-            a = 1;
+            if (aircraftinfo.FlightTime > 4000)
+            {
+                *(AircarftFileOutObj) << (*Aircraft) << endl;
+                cout << "½áÊø\t" << aircraftinfo.FlightTime << endl;
+                break;
+            }
+
         }
+        if (aircraftinfo.FlightTime > 2299)
+        {
+            system("pause");
+        }
+
         *(AircarftFileOutObj) << (*Aircraft) << endl;
     }
 

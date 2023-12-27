@@ -5,14 +5,14 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/HighMachAircraft/Headers/**",
-                "c:\\mingw_w64\\mingw64\\bin\\../lib/gcc/x86_64-w64-mingw32/10.3.0/../../../../include/c++/10.3.0/**",
-                "c:\\mingw_w64\\mingw64\\bin\\../lib/gcc/x86_64-w64-mingw32/10.3.0/../../../../include/c++/10.3.0/x86_64-w64-mingw32/**",
-                "c:\\mingw_w64\\mingw64\\bin\\../lib/gcc/x86_64-w64-mingw32/10.3.0/../../../../include/c++/10.3.0/backward/**",
-                "c:\\mingw_w64\\mingw64\\bin\\../lib/gcc/x86_64-w64-mingw32/10.3.0/include/**",
-                "c:\\mingw_w64\\mingw64\\bin\\../lib/gcc/x86_64-w64-mingw32/10.3.0/../../../../include/**",
-                "c:\\mingw_w64\\mingw64\\bin\\../lib/gcc/x86_64-w64-mingw32/10.3.0/include-fixed/**",
-                "c:\\mingw_w64\\mingw64\\bin\\../lib/gcc/x86_64-w64-mingw32/10.3.0/../../../../x86_64-w64-mingw32/include/**",
-                "D:\\vcpkg\\vcpkg\\installed\\x64-windows\\include\\**"
+                "d:\\mingw64\\bin\\../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../include/c++/13.2.0/**",
+                "d:\\mingw64\\bin\\../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../include/c++/13.2.0/x86_64-w64-mingw32/**",
+                "d:\\mingw64\\bin\\../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../include/c++/13.2.0/backward/**",
+                "d:\\mingw64\\bin\\../lib/gcc/x86_64-w64-mingw32/13.2.0/include/**",
+                "d:\\mingw64\\bin\\../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../include/**",
+                "d:\\mingw64\\bin\\../lib/gcc/x86_64-w64-mingw32/13.2.0/include-fixed/**",
+                "d:\\mingw64\\bin\\../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/include/**",
+                "D:\\vcpkg\\installed\\x64-windows\\include\\**"
             ],
             "defines": [
                 "_DEBUG",
@@ -20,10 +20,11 @@
                 "_UNICODE"
             ],
             "windowsSdkVersion": "10.0.17763.0",
-            "compilerPath": "C:/mingw_w64/mingw64/bin/g++.exe",
+            "compilerPath": "D:/mingw64/bin/g++.exe",
             "cStandard": "c17",
             "cppStandard": "c++17",
-            "intelliSenseMode": "windows-gcc-x64"
+            "intelliSenseMode": "windows-gcc-x64",
+            "configurationProvider": "ms-vscode.cmake-tools"
         }
     ],
     "version": 4

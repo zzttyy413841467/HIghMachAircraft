@@ -12,7 +12,7 @@ FlightController::FlightController()
     FlightControllerModels.push_back(guidance);
 }
 
-FlightController::FlightController(AircraftModel *pObj)
+FlightController::FlightController(AircraftModel* pObj)
 {
     pAirObj = pObj;
     guidance = new Guidance(pObj);
@@ -29,7 +29,7 @@ void FlightController::Initial()
     guidance->Initial();
 }
 
-void FlightController::UpdateState(double timeCur, AircraftModel *pAirObject)
+void FlightController::UpdateState(double timeCur, AircraftModel* pAirObject)
 {
     for (size_t i = 0; i < FlightControllerModels.size(); i++)
     {
@@ -37,7 +37,7 @@ void FlightController::UpdateState(double timeCur, AircraftModel *pAirObject)
     }
 }
 
-void FlightController::UpdateOutput(double timeCur, AircraftModel *pAirObject)
+void FlightController::UpdateOutput(double timeCur, AircraftModel* pAirObject)
 {
     for (size_t i = 0; i < FlightControllerModels.size(); i++)
     {
@@ -45,7 +45,7 @@ void FlightController::UpdateOutput(double timeCur, AircraftModel *pAirObject)
     }
 }
 
-void FlightController::UpdateDerivate(double timeCur, AircraftModel *pAirObject)
+void FlightController::UpdateDerivate(double timeCur, AircraftModel* pAirObject)
 {
     for (size_t i = 0; i < FlightControllerModels.size(); i++)
     {
@@ -53,12 +53,12 @@ void FlightController::UpdateDerivate(double timeCur, AircraftModel *pAirObject)
     }
 }
 
-void FlightController::getFileOutputItemName(vector<string> &FileOutItemName)
+void FlightController::getFileOutputItemName(vector<string>& FileOutItemName)
 {
     guidance->getFileOutputItemName(FileOutItemName);
 }
 
-ostream &operator<<(ostream &os, const FlightController &pObj)
+ostream& operator<<(ostream& os, const FlightController& pObj)
 {
     os << *(pObj.guidance);
     return os;
@@ -79,7 +79,7 @@ Guidance::Guidance()
     command.assign(2, 0);
 }
 
-Guidance::Guidance(AircraftModel *pObj)
+Guidance::Guidance(AircraftModel* pObj)
 {
     pAirObj = pObj;
     GuidancePhase = 1;
@@ -107,7 +107,7 @@ void Guidance::Initial()
     thirdGuidance->Initial();
 }
 
-void Guidance::UpdateState(double timeCur, AircraftModel *pAirObject)
+void Guidance::UpdateState(double timeCur, AircraftModel* pAirObject)
 {
     UpdateGuidancePhase(timeCur, pAirObject);
     switch (GuidancePhase)
@@ -129,7 +129,7 @@ void Guidance::UpdateState(double timeCur, AircraftModel *pAirObject)
     }
 }
 
-void Guidance::UpdateOutput(double timeCur, AircraftModel *pAirObject)
+void Guidance::UpdateOutput(double timeCur, AircraftModel* pAirObject)
 {
     switch (GuidancePhase)
     {
@@ -150,7 +150,7 @@ void Guidance::UpdateOutput(double timeCur, AircraftModel *pAirObject)
     }
 }
 
-void Guidance::UpdateDerivate(double timeCur, AircraftModel *pAirObject)
+void Guidance::UpdateDerivate(double timeCur, AircraftModel* pAirObject)
 {
     switch (GuidancePhase)
     {
@@ -171,7 +171,7 @@ void Guidance::UpdateDerivate(double timeCur, AircraftModel *pAirObject)
     }
 }
 
-void Guidance::UpdateGuidancePhase(double timeCur, AircraftModel *pAirObject)
+void Guidance::UpdateGuidancePhase(double timeCur, AircraftModel* pAirObject)
 {
     double H = pAirObject->getSysState()->Position[1];
     double m = pAirObject->getSysState()->m;
@@ -184,28 +184,31 @@ void Guidance::UpdateGuidancePhase(double timeCur, AircraftModel *pAirObject)
         if (GuidancePhase == 1)
         {
             GuidancePhase = 2;
-            cout << "çˆ¬å‡æ®µ\t" << timeCur << endl;
+            cout << "ÅÀÉý¶Î\t" << timeCur << endl;
         }
         if (GuidancePhase == 2)
         {
             if (H > 25000)
             {
+                pAirObject->time_2 = timeCur;
                 GuidancePhase = 3;
-                cout << "å·¡èˆªæ®µ\t" << timeCur << endl;
+                pAirObject->e_theta = 0;
+                cout << "Ñ²º½¶Î\t" << timeCur << endl;
             }
         }
         if (GuidancePhase == 3)
         {
-            if (m < 3310)
+            if (m < 3302)
             {
                 GuidancePhase = 4;
-                cout << "è¿”èˆªæ®µ\t" << timeCur << endl;
+                pAirObject->getSysState()->setm(3300);
+                cout << "·µº½¶Î\t" << timeCur << endl;
             }
         }
     }
 }
 
-void Guidance::getFileOutputItemName(vector<string> &FileOutItemName)
+void Guidance::getFileOutputItemName(vector<string>& FileOutItemName)
 {
     FileOutItemName.push_back("GuidancePhase");
     FileOutItemName.push_back("AlphaCommand");
@@ -213,7 +216,7 @@ void Guidance::getFileOutputItemName(vector<string> &FileOutItemName)
     FileOutItemName.push_back("RatioCommand");
 }
 
-ostream &operator<<(ostream &os, const Guidance &pObj)
+ostream& operator<<(ostream& os, const Guidance& pObj)
 {
     os << pObj.GuidancePhase << "\t" << pObj.command[0] << "\t" << pObj.command[1] << "\t" << pObj.command[2];
     return os;
@@ -225,7 +228,7 @@ FirstGuidance::FirstGuidance()
     command.assign(3, 0);
 }
 
-FirstGuidance::FirstGuidance(AircraftModel *pObj)
+FirstGuidance::FirstGuidance(AircraftModel* pObj)
 {
     pAirObj = pObj;
     command.assign(3, 0);
@@ -238,18 +241,18 @@ void FirstGuidance::Initial()
 {
 }
 
-void FirstGuidance::UpdateState(double timeCur, AircraftModel *pAirObject)
+void FirstGuidance::UpdateState(double timeCur, AircraftModel* pAirObject)
 {
 }
 
-void FirstGuidance::UpdateOutput(double timeCur, AircraftModel *pAirObject)
+void FirstGuidance::UpdateOutput(double timeCur, AircraftModel* pAirObject)
 {
     command[0] = 0;
     command[1] = 0;
     command[2] = 0;
 }
 
-void FirstGuidance::UpdateDerivate(double timeCur, AircraftModel *pAirObject)
+void FirstGuidance::UpdateDerivate(double timeCur, AircraftModel* pAirObject)
 {
 }
 
@@ -259,7 +262,7 @@ SecondGuidance::SecondGuidance()
     command.assign(3, 0);
 }
 
-SecondGuidance::SecondGuidance(AircraftModel *pObj)
+SecondGuidance::SecondGuidance(AircraftModel* pObj)
 {
     pAirObj = pObj;
     command.assign(3, 0);
@@ -272,7 +275,7 @@ void SecondGuidance::Initial()
 {
 }
 
-double SecondGuidance::calcuAlpha(double timeCur, AircraftModel *pAirObject)
+double SecondGuidance::calcuAlpha(double timeCur, AircraftModel* pAirObject)
 {
 
     double thrust = pAirObject->getAirframe()->getPropulsion()->getThrustTotal();
@@ -330,11 +333,11 @@ double SecondGuidance::calcuAlpha(double timeCur, AircraftModel *pAirObject)
     return x1;
 }
 
-void SecondGuidance::UpdateState(double timeCur, AircraftModel *pAirObject)
+void SecondGuidance::UpdateState(double timeCur, AircraftModel* pAirObject)
 {
 }
 
-void SecondGuidance::UpdateOutput(double timeCur, AircraftModel *pAirObject)
+void SecondGuidance::UpdateOutput(double timeCur, AircraftModel* pAirObject)
 {
     double alpha = 0;
     if (timeCur < 15.006)
@@ -352,7 +355,7 @@ void SecondGuidance::UpdateOutput(double timeCur, AircraftModel *pAirObject)
     }
 }
 
-void SecondGuidance::UpdateDerivate(double timeCur, AircraftModel *pAirObject)
+void SecondGuidance::UpdateDerivate(double timeCur, AircraftModel* pAirObject)
 {
 }
 
@@ -362,7 +365,7 @@ ThirdGuidance::ThirdGuidance()
     command.assign(3, 0);
 }
 
-ThirdGuidance::ThirdGuidance(AircraftModel *pObj)
+ThirdGuidance::ThirdGuidance(AircraftModel* pObj)
 {
     pAirObj = pObj;
     command.assign(3, 0);
@@ -373,13 +376,26 @@ ThirdGuidance::~ThirdGuidance()
 }
 void ThirdGuidance::Initial()
 {
+    ifstream file("E:\\ÑÐ¾¿Éú\\ÂÛÎÄ\\¸ßÂíºÕ·ÉÐÐÆ÷\\code\\command.txt");
+    string line;
+    while (getline(file, line))
+    {
+        std::istringstream iss(line);
+        double num1, num2;
+
+        if (!(iss >> num1 >> num2)) { break; } // error
+
+        t_command.push_back(num1);
+        n_command.push_back(num2);
+    }
+    file.close();
 }
 
-void ThirdGuidance::UpdateState(double timeCur, AircraftModel *pAirObject)
+void ThirdGuidance::UpdateState(double timeCur, AircraftModel* pAirObject)
 {
 }
 
-void ThirdGuidance::UpdateOutput(double timeCur, AircraftModel *pAirObject)
+void ThirdGuidance::UpdateOutput(double timeCur, AircraftModel* pAirObject)
 {
     double h = pAirObject->getAirframe()->getDynamics()->getH();
     vec com;
@@ -406,11 +422,32 @@ void ThirdGuidance::UpdateOutput(double timeCur, AircraftModel *pAirObject)
     }
 }
 
-void ThirdGuidance::UpdateDerivate(double timeCur, AircraftModel *pAirObject)
+void ThirdGuidance::UpdateDerivate(double timeCur, AircraftModel* pAirObject)
 {
 }
 
-vec ThirdGuidance::calcuControl(double timeCur, AircraftModel *pAirObject)
+double interp1(vec x, vec y, double xq)
+{
+    // Find index of point in x that is just below xq
+    auto it = std::upper_bound(x.begin(), x.end(), xq);
+    if (it == x.begin()) {
+        return y[0];
+    }
+    if (it == x.end()) {
+        return y.back();
+    }
+    int idx = std::max(static_cast<int>(it - x.begin()) - 1, 0);
+
+    // Compute weight for interpolation
+    double dx = (xq - x[idx]) / (x[idx + 1] - x[idx]);
+
+    // Interpolate
+    double yq = (1 - dx) * y[idx] + dx * y[idx + 1];
+
+    return yq;
+}
+
+vec ThirdGuidance::calcuControl(double timeCur, AircraftModel* pAirObject)
 {
 
     double thrust = pAirObject->getAirframe()->getPropulsion()->getThrustTotal();
@@ -437,7 +474,7 @@ vec ThirdGuidance::calcuControl(double timeCur, AircraftModel *pAirObject)
     if (timeCur > 1300 && timeCur < 2300)
     {
         //n = 10 * cos(2 * pi / 200.0 * (timeCur - 1300));
-        n = 0;
+        n = -interp1(t_command, n_command, timeCur - 1300);;
     }
     double omega_h = 1.0 / 10;
     double omega_v = 1.0 / 10;

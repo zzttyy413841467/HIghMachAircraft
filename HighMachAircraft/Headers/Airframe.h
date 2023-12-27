@@ -14,40 +14,40 @@ class Airframe : public AircraftBase
 {
 public:
     Airframe();
-    Airframe(AircraftModel *pObj);
+    Airframe(AircraftModel* pObj);
     ~Airframe();
 
     void Initial();
-    void UpdateState(double timeCur, AircraftModel *pAirObject);
-    void UpdateOutput(double timeCur, AircraftModel *pAirObject);
-    void UpdateDerivate(double timeCur, AircraftModel *pAirObject);
+    void UpdateState(double timeCur, AircraftModel* pAirObject);
+    void UpdateOutput(double timeCur, AircraftModel* pAirObject);
+    void UpdateDerivate(double timeCur, AircraftModel* pAirObject);
 
-    Dynamics *getDynamics() { return dynamics; }
-    Propulsion *getPropulsion() { return propulsion; }
-    AeroData *getAeroData() { return aerodata; }
+    Dynamics* getDynamics() { return dynamics; }
+    Propulsion* getPropulsion() { return propulsion; }
+    AeroData* getAeroData() { return aerodata; }
 
-    void getFileOutputItemName(vector<string> &FileOutItemName);
-    friend ostream &operator<<(ostream &os, const Airframe &pObj);
+    void getFileOutputItemName(vector<string>& FileOutItemName);
+    friend ostream& operator<<(ostream& os, const Airframe& pObj);
 
 private:
-    AircraftModel *pAirObj;
-    Dynamics *dynamics;
-    Propulsion *propulsion;
-    AeroData *aerodata;
-    vector<AircraftBase *> AirframeModels;
+    AircraftModel* pAirObj;
+    Dynamics* dynamics;
+    Propulsion* propulsion;
+    AeroData* aerodata;
+    vector<AircraftBase*> AirframeModels;
 };
 
 class Dynamics : public AircraftBase
 {
 public:
     Dynamics();
-    Dynamics(AircraftModel *pObj);
+    Dynamics(AircraftModel* pObj);
     ~Dynamics();
 
     void Initial();
-    void UpdateState(double timeCur, AircraftModel *pAirObject);
-    void UpdateOutput(double timeCur, AircraftModel *pAirObject);
-    void UpdateDerivate(double timeCur, AircraftModel *pAirObject);
+    void UpdateState(double timeCur, AircraftModel* pAirObject);
+    void UpdateOutput(double timeCur, AircraftModel* pAirObject);
+    void UpdateDerivate(double timeCur, AircraftModel* pAirObject);
 
     vec getPosition() const { return Position; }
     vec getVelocity() const { return Velocity; }
@@ -66,11 +66,11 @@ public:
     vec getGravity() const { return Gravity; }
     vec getAcc() const { return m_acceleration; }
 
-    void getFileOutputItemName(vector<string> &FileOutItemName);
-    friend ostream &operator<<(ostream &os, const Dynamics &pObj);
+    void getFileOutputItemName(vector<string>& FileOutItemName);
+    friend ostream& operator<<(ostream& os, const Dynamics& pObj);
 
 private:
-    AircraftModel *pAirObj;
+    AircraftModel* pAirObj;
     vec Position;
     vec Velocity;
 
@@ -94,6 +94,8 @@ private:
     double Sref;
     double Lref;
 
+    double n;
+
     vec m_Force;
     vec m_acceleration;
     StandardAtmosphere SA;
@@ -104,24 +106,24 @@ class Propulsion : public AircraftBase
 {
 public:
     Propulsion();
-    Propulsion(AircraftModel *pObj);
+    Propulsion(AircraftModel* pObj);
     ~Propulsion();
 
     void Initial();
-    void UpdateState(double timeCur, AircraftModel *pAirObject);
-    void UpdateOutput(double timeCur, AircraftModel *pAirObject);
-    void UpdateDerivate(double timeCur, AircraftModel *pAirObject);
+    void UpdateState(double timeCur, AircraftModel* pAirObject);
+    void UpdateOutput(double timeCur, AircraftModel* pAirObject);
+    void UpdateDerivate(double timeCur, AircraftModel* pAirObject);
 
     double getMassflow() const { return massflow; }
     double getMassDerivate() const { return massDerivate; }
     double getThrustTotal() const { return thrustTotal; }
     double getMass() const { return mass; }
 
-    void getFileOutputItemName(vector<string> &FileOutItemName);
-    friend ostream &operator<<(ostream &os, const Propulsion &pObj);
+    void getFileOutputItemName(vector<string>& FileOutItemName);
+    friend ostream& operator<<(ostream& os, const Propulsion& pObj);
 
 private:
-    AircraftModel *pAirObj;
+    AircraftModel* pAirObj;
 
     int FlightPhase;
     double timeFlightNow;
@@ -137,30 +139,30 @@ class AeroData : public AircraftBase
 {
 public:
     AeroData();
-    AeroData(AircraftModel *pObj);
+    AeroData(AircraftModel* pObj);
     ~AeroData();
 
     void Initial();
-    void UpdateState(double timeCur, AircraftModel *pAirObject);
-    void UpdateOutput(double timeCur, AircraftModel *pAirObject);
-    void UpdateDerivate(double timeCur, AircraftModel *pAirObject);
+    void UpdateState(double timeCur, AircraftModel* pAirObject);
+    void UpdateOutput(double timeCur, AircraftModel* pAirObject);
+    void UpdateDerivate(double timeCur, AircraftModel* pAirObject);
 
     double getLref() const { return Lref; }
     double getSref() const { return Sref; }
     double getCl() const { return Cl; }
     double getCd() const { return Cd; }
-    double getCl(double alpha,AircraftModel *pAirObject);
-    double getCd(double alpha, AircraftModel *pAirObject);
-    double getCl_alpha(double alpha, AircraftModel *pAirObject);
-    double getCd_alpha(double alpha, AircraftModel *pAirObject);
+    double getCl(double alpha, AircraftModel* pAirObject);
+    double getCd(double alpha, AircraftModel* pAirObject);
+    double getCl_alpha(double alpha, AircraftModel* pAirObject);
+    double getCd_alpha(double alpha, AircraftModel* pAirObject);
     double getCl_alpha() const { return Cl_alpha; }
     double getCd_alpha() const { return Cd_alpha; }
 
-    void getFileOutputItemName(vector<string> &FileOutItemName);
-    friend ostream &operator<<(ostream &os, const AeroData &pObj);
+    void getFileOutputItemName(vector<string>& FileOutItemName);
+    friend ostream& operator<<(ostream& os, const AeroData& pObj);
 
 private:
-    AircraftModel *pAirObj;
+    AircraftModel* pAirObj;
     int AeroStageFlag;
     static const double Sref;
     static const double Lref;

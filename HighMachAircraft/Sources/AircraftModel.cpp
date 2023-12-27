@@ -19,6 +19,7 @@ AircraftModel::AircraftModel()
     e_theta = 0;
     e_v = 0;
     heightFlag = false;
+    velFlag = false;
 }
 
 AircraftModel::~AircraftModel()
@@ -38,10 +39,10 @@ void AircraftModel::Initial()
     sysState->m = 23000;
     airframe->Initial();
     flightController->Initial();
-    cout << "èµ·é£žæ®µ\t" << t_flight << endl;
+    cout << "Æð·É¶Î\t" << t_flight << endl;
 }
 
-void AircraftModel::UpdateState(double timeCur, AircraftModel *pAirObject)
+void AircraftModel::UpdateState(double timeCur, AircraftModel* pAirObject)
 {
     for (size_t i = 0; i < AircraftModels.size(); i++)
     {
@@ -50,7 +51,7 @@ void AircraftModel::UpdateState(double timeCur, AircraftModel *pAirObject)
     FlightPhase = pAirObject->getFlightController()->getGuidance()->getGuidancePhase();
 }
 
-void AircraftModel::UpdateOutput(double timeCur, AircraftModel *pAirObject)
+void AircraftModel::UpdateOutput(double timeCur, AircraftModel* pAirObject)
 {
     for (size_t i = 0; i < AircraftModels.size(); i++)
     {
@@ -58,7 +59,7 @@ void AircraftModel::UpdateOutput(double timeCur, AircraftModel *pAirObject)
     }
 }
 
-void AircraftModel::UpdateDerivate(double timeCur, AircraftModel *pAirObject)
+void AircraftModel::UpdateDerivate(double timeCur, AircraftModel* pAirObject)
 {
     for (size_t i = 0; i < AircraftModels.size(); i++)
     {
@@ -92,7 +93,7 @@ void AircraftModel::AircraftStepOn()
     convertVectorToSysState(x0);
 }
 
-vec AircraftModel::operator()(double t, const vec &sysstate)
+vec AircraftModel::operator()(double t, const vec& sysstate)
 {
     t_flight = t;
     convertVectorToSysState(sysstate);
@@ -103,7 +104,7 @@ vec AircraftModel::operator()(double t, const vec &sysstate)
     return derivateRtn;
 }
 
-void AircraftModel::convertVectorToSysState(const vec &sysstate)
+void AircraftModel::convertVectorToSysState(const vec& sysstate)
 {
     int i = 0;
     for (int j = 0; j < sysState->Position.size(); j++, i++)
@@ -152,7 +153,7 @@ vec AircraftModel::computeSysStateDerivate()
     return DerivateRtn;
 }
 
-void AircraftModel::getAircraftInfo(AircraftInfo &airInfo)
+void AircraftModel::getAircraftInfo(AircraftInfo& airInfo)
 {
     airInfo.FlightTime = t_flight;
     airInfo.Position = sysState->Position;
@@ -160,18 +161,19 @@ void AircraftModel::getAircraftInfo(AircraftInfo &airInfo)
     airInfo.m = sysState->m;
 }
 
-void AircraftModel::getFileOutoutItemName(vector<string> &FileOutputItemName)
+void AircraftModel::getFileOutoutItemName(vector<string>& FileOutputItemName)
 {
     FileOutputItemName.push_back("t_flight");
     airframe->getFileOutputItemName(FileOutputItemName);
     flightController->getFileOutputItemName(FileOutputItemName);
 }
 
-void AircraftModel::CreateAirObjOutputFile(ofstream &AirFileOutputObj)
+void AircraftModel::CreateAirObjOutputFile(ofstream& AirFileOutputObj)
 {
     string Output2FilePathName;
     stringstream ss;
-    ss << "../Sim/aircraft.txt";
+    //ss << "../Sim/aircraft.txt";
+    ss << "../../HighMachAircraft/Output/Sim/aircraft.txt";
     Output2FilePathName = ss.str();
     AirFileOutputObj.open(Output2FilePathName);
 
@@ -184,10 +186,10 @@ void AircraftModel::CreateAirObjOutputFile(ofstream &AirFileOutputObj)
     AirFileOutputObj << endl;
 }
 
-ostream &operator<<(ostream &os, const AircraftModel &pAirObject)
+ostream& operator<<(ostream& os, const AircraftModel& pAirObject)
 {
     os << (pAirObject.t_flight) << "\t"
-       << *(pAirObject.airframe)
-       << *(pAirObject.flightController);
+        << *(pAirObject.airframe)
+        << *(pAirObject.flightController);
     return os;
 }
