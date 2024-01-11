@@ -184,7 +184,7 @@ void Guidance::UpdateGuidancePhase(double timeCur, AircraftModel* pAirObject)
         if (GuidancePhase == 1)
         {
             GuidancePhase = 2;
-            cout << "爬升段\t" << timeCur << endl;
+            cout << "acsent phase\t" << timeCur << endl;
         }
         if (GuidancePhase == 2)
         {
@@ -193,7 +193,7 @@ void Guidance::UpdateGuidancePhase(double timeCur, AircraftModel* pAirObject)
                 pAirObject->time_2 = timeCur;
                 GuidancePhase = 3;
                 pAirObject->e_theta = 0;
-                cout << "巡航段\t" << timeCur << endl;
+                cout << "cruise phase\t" << timeCur << endl;
             }
         }
         if (GuidancePhase == 3)
@@ -202,7 +202,7 @@ void Guidance::UpdateGuidancePhase(double timeCur, AircraftModel* pAirObject)
             {
                 GuidancePhase = 4;
                 pAirObject->getSysState()->setm(3300);
-                cout << "返航段\t" << timeCur << endl;
+                cout << "return phase\t" << timeCur << endl;
             }
         }
     }
@@ -376,7 +376,7 @@ ThirdGuidance::~ThirdGuidance()
 }
 void ThirdGuidance::Initial()
 {
-    ifstream file("E:\\研究生\\论文\\高马赫飞行器\\code\\command.txt");
+    ifstream file("../../../code/command.txt");
     string line;
     while (getline(file, line))
     {

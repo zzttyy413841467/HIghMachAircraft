@@ -39,7 +39,7 @@ void AircraftModel::Initial()
     sysState->m = 23000;
     airframe->Initial();
     flightController->Initial();
-    cout << "Æð·É¶Î\t" << t_flight << endl;
+    cout << "start phase\t" << t_flight << endl;
 }
 
 void AircraftModel::UpdateState(double timeCur, AircraftModel* pAirObject)

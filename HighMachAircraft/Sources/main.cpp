@@ -85,7 +85,7 @@ int main()
             if (aircraftinfo.FlightTime > 4000)
             {
                 *(AircarftFileOutObj) << (*Aircraft) << endl;
-                cout << "½áÊø\t" << aircraftinfo.FlightTime << endl;
+                cout << "finish!\t" << aircraftinfo.FlightTime << endl;
                 break;
             }
 
@@ -93,6 +93,7 @@ int main()
         if (aircraftinfo.FlightTime > 2299)
         {
             system("pause");
+            break;
         }
 
         *(AircarftFileOutObj) << (*Aircraft) << endl;
